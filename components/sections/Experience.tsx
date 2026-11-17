@@ -2,6 +2,7 @@ import Card from "@/components/ui/Card";
 import Section from "@/components/ui/Section";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { cn } from "@/lib/cn";
+import { reveal } from "@/lib/reveal";
 import { site } from "@/content/site";
 
 export default function Experience() {
@@ -14,7 +15,7 @@ export default function Experience() {
       {/* Timeline: a 2px line on the left, one glass card + dot per role. */}
       <ol className="mt-12 flex flex-col gap-5 border-l-2 border-border-soft pl-8">
         {roles.map((role) => (
-          <li key={`${role.title}-${role.dates}`}>
+          <li key={`${role.title}-${role.dates}`} {...reveal()}>
             <Card className="relative p-7">
               <span
                 aria-hidden="true"
@@ -44,8 +45,8 @@ export default function Experience() {
 
       <h3 className="sr-only">{educationHeading}</h3>
       <ul className="mt-8 grid gap-4 sm:grid-cols-2">
-        {education.map((item) => (
-          <li key={item.degree}>
+        {education.map((item, index) => (
+          <li key={item.degree} {...reveal(index, 2)}>
             <Card className="h-full p-6">
               <p className="mb-1.5 text-[12px] font-semibold uppercase tracking-[0.14em] text-accent-text">
                 {item.label}

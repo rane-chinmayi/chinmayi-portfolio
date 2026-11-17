@@ -76,7 +76,7 @@ export default function Header() {
           <Link
             href="/#top"
             onClick={closeMenu}
-            className="font-heading text-[22px] font-bold leading-none text-foreground"
+            className="font-heading text-[22px] font-bold leading-none text-foreground transition-opacity hover:opacity-80 active:opacity-70"
           >
             {site.shortName}
             <span className="text-accent-text">.</span>
@@ -89,7 +89,7 @@ export default function Header() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-[14px] font-medium text-muted transition-colors hover:text-foreground"
+                      className="text-[14px] font-medium text-muted transition-colors hover:text-foreground active:text-muted"
                     >
                       {link.label}
                     </Link>
@@ -109,7 +109,7 @@ export default function Header() {
             aria-expanded={isOpen}
             aria-controls={MOBILE_NAV_ID}
             aria-label={isOpen ? site.labels.closeMenu : site.labels.openMenu}
-            className="inline-flex size-10 items-center justify-center rounded-pill text-foreground transition-colors hover:bg-fill-chip lg:hidden"
+            className="inline-flex size-10 items-center justify-center rounded-pill text-foreground transition-colors hover:bg-fill-chip active:bg-fill-soft lg:hidden"
           >
             {isOpen ? (
               <X className="size-5" aria-hidden="true" />
@@ -134,7 +134,7 @@ export default function Header() {
                   <Link
                     href={link.href}
                     onClick={closeMenu}
-                    className="block rounded-inner px-3 py-3 text-base font-medium text-muted transition-colors hover:bg-fill-chip hover:text-foreground"
+                    className="block rounded-inner px-3 py-3 text-base font-medium text-muted transition-colors hover:bg-fill-chip hover:text-foreground active:bg-fill-soft"
                   >
                     {link.label}
                   </Link>

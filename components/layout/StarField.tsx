@@ -1,4 +1,6 @@
-const STAR_COUNT = 50;
+// Each star is its own animated compositor layer; 32 reads the same as 50 but
+// costs less main-thread/paint time on slow phones (Lighthouse mobile TBT).
+const STAR_COUNT = 32;
 
 function seededRandom(seed: number) {
   const x = Math.sin(seed) * 10000;

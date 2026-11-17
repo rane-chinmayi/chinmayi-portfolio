@@ -4,6 +4,7 @@ import Chip from "@/components/ui/Chip";
 import IconTile from "@/components/ui/IconTile";
 import Section from "@/components/ui/Section";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { reveal } from "@/lib/reveal";
 import { site } from "@/content/site";
 import type { ExpertiseIcon } from "@/content/types";
 
@@ -20,10 +21,10 @@ export default function Expertise() {
       <SectionHeader id="expertise" {...site.sections.expertise} />
 
       <ul className="mt-12 grid gap-5 md:grid-cols-2">
-        {site.expertise.items.map((item) => {
+        {site.expertise.items.map((item, index) => {
           const Icon = icons[item.icon];
           return (
-            <li key={item.title}>
+            <li key={item.title} {...reveal(index, 2)}>
               <Card className="h-full p-8">
                 <IconTile>
                   <Icon className="size-5" aria-hidden="true" />

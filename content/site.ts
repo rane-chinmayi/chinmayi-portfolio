@@ -1,4 +1,4 @@
-import type { SiteContent } from "./types";
+import type { OfferItem, PostItem, SiteContent } from "./types";
 
 /**
  * Single source of truth for site copy and links.
@@ -46,6 +46,60 @@ export const site: SiteContent = {
     opensInNewTab: "(opens in a new tab)",
   },
 
+  /**
+   * Feature flags. Turned-off features are hidden, not deleted: all the code
+   * stays, so flipping a flag restores the behaviour exactly.
+   *
+   * newsletter: set to true once an email provider is connected. Before you
+   * flip it: set `writing.newsletter.provider` and `actionUrl` (see the TODO
+   * there) and, if you like, replace the "Newsletter" post card with the real
+   * latest issue. While false: no signup band, no Newsletter card, the hero
+   * chip says "Writing on applied AI for PMs", the Writing section shows a
+   * "Follow along on LinkedIn" call to action, and the course/template offer
+   * buttons email you instead of pointing at the signup form.
+   */
+  features: {
+    newsletter: false,
+  },
+
+  seo: {
+    keywords: [
+      "AI product manager",
+      "AI product management",
+      "product manager London",
+      "generative AI",
+      "agentic AI",
+      "NLP",
+      "product strategy",
+      "0 to 1 products",
+      "Chinmayi Rane",
+    ],
+    // Mirror of --bg in app/globals.css (#08080B). Keep in sync.
+    themeColor: "#08080B",
+    locale: "en_GB",
+    ogImageAlt:
+      "Chinmayi Rane. AI × Product, made simple. AI Product Manager, Mumbai to London.",
+    jobTitle: "AI Product Manager",
+    knowsAbout: [
+      "AI product management",
+      "Generative AI",
+      "NLP",
+      "Product strategy",
+    ],
+    alumniOf: ["Oklahoma State University", "Sardar Patel Institute of Technology"],
+  },
+
+  notFound: {
+    eyebrow: "404",
+    title: "This page is still in the prototype stage.",
+    body: "The page you're looking for doesn't exist (yet). Let's get you back to the good stuff.",
+    cta: "Back to home",
+  },
+
+  // Paths listed in sitemap.xml. Add "/work/ypc-workspace", "/writing" etc.
+  // here once those pages exist; only list pages that actually render.
+  publishedRoutes: ["/"],
+
   hero: {
     eyebrow: "AI × Product, made simple",
     greeting: "Hi, I'm",
@@ -63,12 +117,14 @@ export const site: SiteContent = {
     ],
     primaryCta: { label: "View My Work", href: "/#work" },
     secondaryCta: { label: "Get In Touch", href: "/#contact" },
-    chips: ["Open to AI PM roles in London", "Weekly newsletter on applied AI"],
+    chips: ["Open to AI PM roles in London"],
+    newsletterChip: "Weekly newsletter on applied AI",
+    writingChip: "Writing on applied AI for PMs",
     connectLabel: "Connect",
     // The source photo is landscape (920×809); 65% keeps the face centred in the 4:5 crop.
     photo: { src: "/photo.jpg", alt: "Chinmayi Rane", objectPosition: "65% center" },
     statBadge: { value: "30+", lines: ["daily users on", "my latest product"] },
-    awardBadge: { value: "2×", label: "IEEE published" },
+    awardBadge: { value: "3×", label: "AI/ML publications" },
   },
 
   about: {
@@ -86,7 +142,7 @@ export const site: SiteContent = {
       { value: "30+", label: "Daily active users" },
       { value: "100+", label: "Customer interviews" },
       { value: "18.9K", label: "Records in my NLP pipeline" },
-      { value: "2", label: "IEEE publications" },
+      { value: "3", label: "AI/ML publications" },
     ],
   },
 
@@ -259,6 +315,10 @@ export const site: SiteContent = {
       invalidMessage: "Enter a valid email address.",
       unavailableMessage: "Newsletter launching soon. Check back shortly.",
     },
+    followCta: {
+      line: "I post plain-language AI explainers for PMs and founders every week.",
+      label: "Follow along on LinkedIn",
+    },
   },
 
   // Each offer can take an optional `price` and a `cta.href`. Until then the
@@ -274,8 +334,14 @@ export const site: SiteContent = {
           "A practical course for PMs who want to scope, prototype and ship their first AI feature.",
         // TODO(chinmayi): set `price` when you have one (it replaces `status`).
         status: "Waitlist open",
-        // TODO(chinmayi): point this at a waitlist form once you have one.
-        cta: { label: "Join waitlist", href: "/#writing" },
+        // TODO(chinmayi): replace the mailto with a waitlist form link once you
+        // have one. `href` is used when features.newsletter is true.
+        cta: {
+          label: "Join waitlist",
+          href: "/#writing",
+          hrefNoNewsletter:
+            "mailto:chinmayi.m.rane@gmail.com?subject=Course%20waitlist",
+        },
       },
       {
         kind: "template",
@@ -286,7 +352,14 @@ export const site: SiteContent = {
           "The PRD structure I used to unblock engineering on an AI operating layer.",
         // TODO(chinmayi): set `price` and a purchase link when it is ready.
         status: "Coming soon",
-        cta: { label: "Get notified", href: "/#writing" },
+        // TODO(chinmayi): replace the mailto with a sign-up/purchase link when
+        // the template is ready. `href` is used when features.newsletter is true.
+        cta: {
+          label: "Get notified",
+          href: "/#writing",
+          hrefNoNewsletter:
+            "mailto:chinmayi.m.rane@gmail.com?subject=PRD%20template",
+        },
       },
       {
         kind: "mentorship",
@@ -366,4 +439,23 @@ export const site: SiteContent = {
 /** URL of a case-study page. The pages themselves arrive in a later step. */
 export function caseStudyHref(slug: string): string {
   return `/work/${slug}`;
+}
+
+/** Link for an offer button, honouring the newsletter feature flag. */
+export function offerHref(cta: NonNullable<OfferItem["cta"]>): string | undefined {
+  if (!site.features.newsletter && cta.hrefNoNewsletter) return cta.hrefNoNewsletter;
+  return cta.href;
+}
+
+/** Hero chips: always-on ones plus the one that depends on the newsletter flag. */
+export function heroChips(): string[] {
+  const { chips, newsletterChip, writingChip } = site.hero;
+  return [...chips, site.features.newsletter ? newsletterChip : writingChip];
+}
+
+/** Writing posts: the Newsletter card is hidden while the newsletter flag is off. */
+export function visiblePosts(): PostItem[] {
+  return site.writing.posts.filter(
+    (post) => site.features.newsletter || post.type !== "Newsletter",
+  );
 }

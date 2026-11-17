@@ -2,6 +2,7 @@ import Button from "@/components/ui/Button";
 import Chip from "@/components/ui/Chip";
 import Section from "@/components/ui/Section";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { reveal } from "@/lib/reveal";
 import { site } from "@/content/site";
 
 export default function Contact() {
@@ -20,7 +21,7 @@ export default function Contact() {
         {...site.sections.contact}
       />
 
-      <div className="mt-8 flex flex-wrap justify-center gap-3">
+      <div className="mt-8 flex flex-wrap justify-center gap-3" {...reveal()}>
         <Button href={links.emailHref} size="md" glow={false}>
           {contact.emailLabel}
         </Button>
@@ -38,7 +39,7 @@ export default function Contact() {
         </Button>
       </div>
 
-      <ul className="mt-7 flex flex-wrap justify-center gap-2.5">
+      <ul className="mt-7 flex flex-wrap justify-center gap-2.5" {...reveal(1, 2)}>
         {contact.chips.map((chip) => (
           <li key={chip}>
             <Chip tone="muted">{chip}</Chip>

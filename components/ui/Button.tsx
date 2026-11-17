@@ -32,16 +32,17 @@ type NativeButtonProps = CommonProps & {
 export type ButtonProps = LinkButtonProps | NativeButtonProps;
 
 const base =
-  "inline-flex items-center justify-center gap-2 rounded-pill border font-semibold transition duration-200 motion-reduce:transition-none";
+  "inline-flex items-center justify-center gap-2 rounded-pill border font-semibold transition duration-200 motion-safe:active:scale-[0.98] motion-reduce:transition-none";
 
 const variants: Record<Variant, string> = {
-  primary: "border-transparent bg-accent text-on-accent hover:brightness-110",
+  primary:
+    "border-transparent bg-accent text-on-accent hover:brightness-110 active:brightness-95",
   // Hero secondary: outline with a faint fill.
   secondary:
-    "border-border-strong bg-fill-subtle text-foreground hover:bg-fill-chip",
+    "border-border-strong bg-fill-subtle text-foreground hover:bg-fill-chip active:bg-fill-soft",
   // Plain outline, no fill (contact, offers).
   outline:
-    "border-border-strong bg-transparent text-foreground hover:bg-fill-chip",
+    "border-border-strong bg-transparent text-foreground hover:bg-fill-chip active:bg-fill-soft",
 };
 
 // Padding includes the 1px border, so primary and secondary are the same size.

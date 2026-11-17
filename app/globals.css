@@ -124,6 +124,24 @@ body {
   }
 }
 
+/* Scroll-reveal (see lib/reveal.ts, components/ui/RevealObserver.tsx).
+   Elements are visible by default; the observer only adds `hidden` after
+   hydration, and only when motion is allowed. */
+@media (prefers-reduced-motion: no-preference) {
+  [data-reveal="hidden"] {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  [data-reveal="shown"] {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 500ms ease-out var(--reveal-delay, 0ms),
+      transform 500ms ease-out var(--reveal-delay, 0ms);
+  }
+}
+
 /* Reduced motion: stars stay still (visible), the cursor stops blinking. */
 @media (prefers-reduced-motion: reduce) {
   .animate-twinkle {
@@ -133,5 +151,15 @@ body {
 
   .animate-blink {
     animation: none;
+  }
+
+  /* Catch-all: no transitions or animations anywhere. */
+  *,
+  *::before,
+  *::after {
+    animation-duration: 0.01ms !important;
+    animation-iteration-count: 1 !important;
+    transition-duration: 0.01ms !important;
+    scroll-behavior: auto !important;
   }
 }

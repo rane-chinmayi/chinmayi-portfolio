@@ -1,28 +1,61 @@
-import type { Metadata } from "next";
+import type { Metadata, Viewport } from "next";
 import { Inter, Poppins } from "next/font/google";
 import Backdrop from "@/components/layout/Backdrop";
 import Footer from "@/components/layout/Footer";
 import Header from "@/components/layout/Header";
+import RevealObserver from "@/components/ui/RevealObserver";
 import { site } from "@/content/site";
+import { siteUrl } from "@/lib/site-url";
 import "./globals.css";
 
+// Inter is a variable font: one file covers every weight (400-700 are used).
 const inter = Inter({
   subsets: ["latin"],
-  weight: ["400", "500", "600"],
   variable: "--font-inter",
   display: "swap",
 });
 
+// Poppins is only used for headings at 600, 700 and 800.
 const poppins = Poppins({
   subsets: ["latin"],
-  weight: ["500", "600", "700", "800"],
+  weight: ["600", "700", "800"],
   variable: "--font-poppins",
   display: "swap",
 });
 
 export const metadata: Metadata = {
-  title: site.title,
+  metadataBase: new URL(siteUrl),
+  title: {
+    default: site.title,
+    template: `%s · ${site.name}`,
+  },
   description: site.description,
+  keywords: site.seo.keywords,
+  authors: [{ name: site.name, url: siteUrl }],
+  creator: site.name,
+  // Relative: each page's canonical is its own URL, resolved against metadataBase.
+  alternates: { canonical: "./" },
+  openGraph: {
+    type: "profile",
+    siteName: site.name,
+    locale: site.seo.locale,
+    title: site.title,
+    description: site.description,
+    url: "./",
+    firstName: "Chinmayi",
+    lastName: "Rane",
+  },
+  twitter: {
+    card: "summary_large_image",
+    title: site.title,
+    description: site.description,
+  },
+  robots: { index: true, follow: true },
+};
+
+export const viewport: Viewport = {
+  themeColor: site.seo.themeColor,
+  colorScheme: "dark",
 };
 
 export default function RootLayout({
@@ -45,6 +78,7 @@ export default function RootLayout({
           {children}
         </main>
         <Footer />
+        <RevealObserver />
       </body>
     </html>
   );

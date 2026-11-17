@@ -3,7 +3,7 @@ import SocialIcon from "@/components/ui/SocialIcon";
 import { site } from "@/content/site";
 
 const linkClass =
-  "inline-flex items-center gap-1.5 text-[13px] text-subtle transition-colors hover:text-foreground";
+  "inline-flex items-center gap-1.5 text-[13px] text-subtle transition-colors hover:text-foreground active:text-muted";
 
 export default function Footer() {
   return (

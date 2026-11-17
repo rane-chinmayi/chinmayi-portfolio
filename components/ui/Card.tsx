@@ -42,7 +42,7 @@ const edges: Record<Edge, string> = {
 };
 
 const lift =
-  "transition duration-200 hover:-translate-y-1 hover:border-border-strong motion-reduce:transition-none motion-reduce:hover:translate-y-0";
+  "transition duration-200 hover:-translate-y-1 hover:border-border-strong active:translate-y-0 motion-reduce:transition-none motion-reduce:hover:translate-y-0";
 
 /** Glass surface, 20px radius, subtle border. Renders a link when `href` is set. */
 export default function Card(props: CardProps) {

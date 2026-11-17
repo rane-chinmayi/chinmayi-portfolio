@@ -8,10 +8,10 @@ import RichText from "@/components/ui/RichText";
 import Section from "@/components/ui/Section";
 import SocialIcon from "@/components/ui/SocialIcon";
 import TypewriterText from "@/components/ui/TypewriterText";
-import { site } from "@/content/site";
+import { heroChips, site } from "@/content/site";
 
 const iconLinkClass =
-  "flex size-[42px] items-center justify-center rounded-pill border border-border-chip text-muted transition-colors duration-200 hover:border-accent-text hover:text-accent-text motion-reduce:transition-none";
+  "flex size-[42px] items-center justify-center rounded-pill border border-border-chip text-muted transition-colors duration-200 hover:border-accent-text hover:text-accent-text active:bg-fill-soft motion-reduce:transition-none";
 
 export default function Hero() {
   const { hero, links, labels } = site;
@@ -56,7 +56,7 @@ export default function Hero() {
           </div>
 
           <ul className="mt-7 flex flex-wrap gap-2.5">
-            {hero.chips.map((chip) => (
+            {heroChips().map((chip) => (
               <li key={chip}>
                 <Chip tone="muted">
                   <Check

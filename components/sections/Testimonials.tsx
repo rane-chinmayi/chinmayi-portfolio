@@ -3,6 +3,7 @@ import Card from "@/components/ui/Card";
 import Section from "@/components/ui/Section";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { cn } from "@/lib/cn";
+import { reveal } from "@/lib/reveal";
 import { site } from "@/content/site";
 
 export default function Testimonials() {
@@ -15,8 +16,8 @@ export default function Testimonials() {
 
       {/* One testimonial renders as a single centred card; more become a grid. */}
       <ul className={cn("mt-10 grid gap-5", !single && "md:grid-cols-2")}>
-        {items.map((item) => (
-          <li key={item.name}>
+        {items.map((item, index) => (
+          <li key={item.name} {...reveal(index, 2)}>
             <Card as="figure" className="h-full p-6 text-left sm:p-10">
               <Quote
                 className="size-6 fill-current text-accent-text"

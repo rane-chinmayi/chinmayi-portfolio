@@ -118,6 +118,42 @@ Brand colour is changed in one place: `--accent`, `--accent-text`,
     effects or browser APIs.
 12. Before finishing a change: `npm run lint`, `npm run typecheck`, `npm run build`.
 
+## Feature flag: newsletter
+
+`content/site.ts` → `features: { newsletter: false }`. While false, nothing
+newsletter-related renders: the Writing band and the "Newsletter" post card are
+hidden (2 centred cards + a "Follow along on LinkedIn" CTA instead), the hero chip
+uses `writingChip`, and Offers waitlist/notify buttons use `hrefNoNewsletter`
+(mailto). All newsletter code stays (`NewsletterForm`, types, `site.newsletter`).
+To turn it on: set up the provider + `actionUrl` (TODOs in `site.ts`), then set
+the flag to `true`. Components read it only through the helpers `heroChips()`,
+`visiblePosts()`, `offerHref()` in `content/site.ts`; do not add ad-hoc checks.
+
+## Scroll-reveal
+
+Spread `{...reveal()}` (`lib/reveal.ts`; `reveal(index, columns)` staggers grid siblings)
+onto an element. Content is visible without JS; `components/ui/RevealObserver`
+(one client component, IntersectionObserver, mounted in `app/layout.tsx`) hides
+below-the-fold items after hydration and fades them in. Fully static under
+`prefers-reduced-motion`. Never reveal above-the-fold content (layout shift).
+
+## SEO and sharing
+
+- `NEXT_PUBLIC_SITE_URL` (see `.env.example`; default `http://localhost:3000`) feeds
+  `lib/site-url.ts` → `metadataBase`, sitemap, robots, JSON-LD. **Set it in Vercel.**
+- Metadata lives in `app/layout.tsx` (copy from `content/site.ts` `seo`/`title`/`description`).
+- `app/opengraph-image.tsx` (+ `twitter-image`, `icon`, `apple-icon`) use `next/og` and
+  **`export const runtime = "edge"`**: the Node runtime fails on Windows (invalid font
+  URL). Poppins is fetched in `lib/og-font.ts`.
+- `content/brand.ts` is a JS mirror of the brand colours for those images (they cannot
+  read CSS variables). **Keep it in sync with `globals.css`** when the accent changes.
+- `app/sitemap.ts` builds from `publishedRoutes` in `content/site.ts`; add `/work/[slug]`
+  and `/writing` paths there when those routes exist.
+- JSON-LD Person is built in `lib/structured-data.ts` and rendered by `ui/JsonLd`.
+- Lighthouse (production build, simulated mobile): 95-98 / 100 / 100 / 100;
+  desktop 99 / 100 / 100 / 100. Scores swing ±5 between runs; the first run after
+  a server start is often an outlier, so repeat before concluding anything.
+
 ## Gotchas
 
 - The project sits inside OneDrive. If the dev server throws `EBUSY`/`ENOENT`

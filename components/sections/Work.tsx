@@ -3,6 +3,7 @@ import Card from "@/components/ui/Card";
 import Chip from "@/components/ui/Chip";
 import Section from "@/components/ui/Section";
 import SectionHeader from "@/components/ui/SectionHeader";
+import { reveal } from "@/lib/reveal";
 import { caseStudyHref, site } from "@/content/site";
 
 export default function Work() {
@@ -11,8 +12,8 @@ export default function Work() {
       <SectionHeader id="work" {...site.sections.work} />
 
       <ul className="mt-12 grid gap-5 md:grid-cols-2">
-        {site.work.items.map((study) => (
-          <li key={study.slug}>
+        {site.work.items.map((study, index) => (
+          <li key={study.slug} {...reveal(index, 2)}>
             <Card
               href={caseStudyHref(study.slug)}
               className="flex h-full flex-col overflow-hidden"

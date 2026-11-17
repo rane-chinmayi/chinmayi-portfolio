@@ -3,7 +3,8 @@ import Card from "@/components/ui/Card";
 import Chip from "@/components/ui/Chip";
 import Section from "@/components/ui/Section";
 import SectionHeader from "@/components/ui/SectionHeader";
-import { site } from "@/content/site";
+import { reveal } from "@/lib/reveal";
+import { offerHref, site } from "@/content/site";
 
 export default function Offers() {
   return (
@@ -11,13 +12,13 @@ export default function Offers() {
       <SectionHeader id="offers" {...site.sections.offers} />
 
       <ul className="mt-12 grid gap-5 lg:grid-cols-3">
-        {site.offers.items.map((offer) => {
-          const href = offer.cta?.href;
+        {site.offers.items.map((offer, index) => {
+          const href = offer.cta ? offerHref(offer.cta) : undefined;
           // Price wins over status once you set one.
           const note = offer.price ?? offer.status;
 
           return (
-            <li key={offer.title}>
+            <li key={offer.title} {...reveal(index, 3)}>
               <Card
                 edge={offer.featured ? "strong" : "default"}
                 className="flex h-full flex-col gap-3.5 p-8"

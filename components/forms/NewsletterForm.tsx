@@ -63,7 +63,7 @@ export default function NewsletterForm({ config }: { config: NewsletterContent }
           aria-invalid={status === "invalid"}
           aria-describedby={messageId}
           onChange={() => status !== "idle" && setStatus("idle")}
-          className="rounded-pill border border-border-field bg-field px-[18px] py-3.5 text-[15px] font-normal normal-case tracking-normal text-foreground placeholder:text-subtle aria-[invalid=true]:border-error"
+          className="rounded-pill border border-border-field bg-field transition-colors hover:border-border-strong px-[18px] py-3.5 text-[15px] font-normal normal-case tracking-normal text-foreground placeholder:text-subtle aria-[invalid=true]:border-error"
         />
       </label>
       <Button type="submit" size="field" glow={false}>

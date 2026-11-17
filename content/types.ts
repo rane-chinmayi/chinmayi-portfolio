@@ -35,7 +35,12 @@ export interface HeroContent {
   bio: RichTextContent;
   primaryCta: LinkItem;
   secondaryCta: LinkItem;
+  /** Chips that are always shown. */
   chips: string[];
+  /** Last chip while the newsletter feature is on. */
+  newsletterChip: string;
+  /** Last chip while the newsletter feature is off. */
+  writingChip: string;
   connectLabel: string;
   photo: { src: string; alt: string; objectPosition: string };
   /** Floating card, bottom-left of the photo. `lines` are stacked. */
@@ -128,6 +133,8 @@ export interface WritingContent {
   posts: PostItem[];
   readLabel: string;
   newsletter: NewsletterContent;
+  /** Shown instead of the newsletter band while the newsletter feature is off. */
+  followCta: { line: string; label: string };
 }
 
 export interface OfferItem {
@@ -140,7 +147,12 @@ export interface OfferItem {
   /** Bottom-row text while there is no price, e.g. "Waitlist open". */
   status?: string;
   /** The button is hidden until `href` is set. */
-  cta?: { label: string; href?: string };
+  cta?: {
+    label: string;
+    href?: string;
+    /** Used instead of `href` while the newsletter feature is off. */
+    hrefNoNewsletter?: string;
+  };
   /** Stronger border + full-width primary button (the featured offer). */
   featured?: boolean;
 }
@@ -157,6 +169,30 @@ export interface ContactContent {
   linkedinLabel: string;
   resumeLabel: string;
   chips: string[];
+}
+
+export interface FeatureFlags {
+  /** Newsletter signup (band, newsletter card, hero chip, offer links). */
+  newsletter: boolean;
+}
+
+export interface SeoContent {
+  keywords: string[];
+  /** Browser UI colour. Mirror of --bg in app/globals.css. */
+  themeColor: string;
+  /** Open Graph locale. */
+  locale: string;
+  ogImageAlt: string;
+  jobTitle: string;
+  knowsAbout: string[];
+  alumniOf: string[];
+}
+
+export interface NotFoundContent {
+  eyebrow: string;
+  title: string;
+  body: string;
+  cta: string;
 }
 
 export interface SiteContent {
@@ -191,6 +227,11 @@ export interface SiteContent {
     email: string;
     opensInNewTab: string;
   };
+  features: FeatureFlags;
+  seo: SeoContent;
+  notFound: NotFoundContent;
+  /** Paths listed in sitemap.xml. Add /work/[slug] etc. once those pages exist. */
+  publishedRoutes: string[];
   hero: HeroContent;
   about: AboutContent;
   expertise: { items: ExpertiseItem[] };

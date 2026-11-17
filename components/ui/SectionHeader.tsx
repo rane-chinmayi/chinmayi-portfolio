@@ -1,5 +1,6 @@
 import { Fragment } from "react";
 import { cn } from "@/lib/cn";
+import { reveal } from "@/lib/reveal";
 import Eyebrow from "./Eyebrow";
 import Lead from "./Lead";
 
@@ -27,7 +28,7 @@ export default function SectionHeader({
   const lines = title.split("\n");
 
   return (
-    <div className={cn("text-center", className)}>
+    <div className={cn("text-center", className)} {...reveal()}>
       {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
       <h2
         id={`${id}-title`}

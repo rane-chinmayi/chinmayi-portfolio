@@ -7,10 +7,13 @@ import Offers from "@/components/sections/Offers";
 import Testimonials from "@/components/sections/Testimonials";
 import Work from "@/components/sections/Work";
 import Writing from "@/components/sections/Writing";
+import JsonLd from "@/components/ui/JsonLd";
+import { personJsonLd } from "@/lib/structured-data";
 
 export default function Home() {
   return (
     <>
+      <JsonLd data={personJsonLd()} />
       <Hero />
       <About />
       <Expertise />

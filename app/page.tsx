@@ -1,35 +1,25 @@
-import Header from "@/components/Header";
-import Hero from "@/components/Hero";
-import About from "@/components/About";
-import Expertise from "@/components/Expertise";
-import Toolkit from "@/components/Toolkit";
-import HowIThink from "@/components/HowIThink";
-import Experience from "@/components/Experience";
-import Education from "@/components/Education";
-import Projects from "@/components/Projects";
-import WhoIHelp from "@/components/WhoIHelp";
-import Advisory from "@/components/Advisory";
-import Testimonials from "@/components/Testimonials";
-import ContactCTA from "@/components/ContactCTA";
-import Footer from "@/components/Footer";
+import About from "@/components/sections/About";
+import Contact from "@/components/sections/Contact";
+import Experience from "@/components/sections/Experience";
+import Expertise from "@/components/sections/Expertise";
+import Hero from "@/components/sections/Hero";
+import Offers from "@/components/sections/Offers";
+import Testimonials from "@/components/sections/Testimonials";
+import Work from "@/components/sections/Work";
+import Writing from "@/components/sections/Writing";
 
 export default function Home() {
   return (
-    <main id="top">
-      <Header />
+    <>
       <Hero />
       <About />
       <Expertise />
-      <Toolkit />
-      <HowIThink />
+      <Work />
       <Experience />
-      <Education />
-      <Projects />
-      <WhoIHelp />
-      <Advisory />
+      <Writing />
+      <Offers />
       <Testimonials />
-      <ContactCTA />
-      <Footer />
-    </main>
+      <Contact />
+    </>
   );
 }

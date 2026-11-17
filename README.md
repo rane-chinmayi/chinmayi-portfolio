@@ -1,36 +1,39 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Chinmayi Rane — portfolio
 
-## Getting Started
+Personal portfolio and brand hub for Chinmayi Rane, AI Product Manager.
+Tagline: **AI × Product, made simple.** It will grow to host a newsletter,
+courses, templates and mentorship.
 
-First, run the development server:
+**Stack:** Next.js 14 (App Router) · TypeScript · Tailwind CSS 3 · lucide-react.
+Fonts: Poppins (headings) and Inter (body) via `next/font`.
+
+## Getting started
+
+Requires Node 20 or newer.
 
 ```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+npm install
+npm run dev        # http://localhost:3000
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+| Script              | What it does                 |
+| ------------------- | ---------------------------- |
+| `npm run dev`       | Dev server                   |
+| `npm run build`     | Production build             |
+| `npm run start`     | Serve the production build   |
+| `npm run lint`      | ESLint (`next lint`)         |
+| `npm run typecheck` | TypeScript, no emit          |
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Where things live
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+- `content/site.ts` — all copy and links (typed in `content/types.ts`).
+- `app/globals.css` — design tokens; `tailwind.config.ts` maps them to Tailwind.
+- `components/ui` — shared primitives; `components/layout` — header, footer,
+  background; `components/sections` — homepage sections.
 
-## Learn More
+See `CLAUDE.md` for the conventions and design rules.
 
-To learn more about Next.js, take a look at the following resources:
+## Resume
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
-
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
-
-## Deploy on Vercel
-
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
-
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+The header, hero and footer link to `/Chinmayi-Rane-Resume.pdf`. Put the PDF at
+`public/Chinmayi-Rane-Resume.pdf`.

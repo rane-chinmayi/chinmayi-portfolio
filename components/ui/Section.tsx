@@ -1,12 +1,14 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
-import Container from "./Container";
+import Container, { type ContainerWidth } from "./Container";
 
 interface SectionProps {
   /** Anchor id, e.g. "about" → /#about. */
   id: string;
   /** id of the heading that names this region. Defaults to `${id}-title`. */
   labelledBy?: string;
+  /** Content width: default 1200px, "timeline" 960px, "narrow" 900px. */
+  width?: ContainerWidth;
   /** "default" = bottom spacing only. "none" lets a section (the hero) set its own. */
   padding?: "default" | "none";
   className?: string;
@@ -18,6 +20,7 @@ interface SectionProps {
 export default function Section({
   id,
   labelledBy = `${id}-title`,
+  width,
   padding = "default",
   className,
   containerClassName,
@@ -34,7 +37,7 @@ export default function Section({
         className,
       )}
     >
-      <Container className={containerClassName}>{children}</Container>
+      <Container width={width} className={containerClassName}>{children}</Container>
     </section>
   );
 }

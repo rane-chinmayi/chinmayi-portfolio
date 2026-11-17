@@ -75,6 +75,90 @@ export interface CaseStudy {
   glowPosition: string;
 }
 
+export interface RoleItem {
+  title: string;
+  company: string;
+  location: string;
+  /** Display string, e.g. "May 2025 – Present". */
+  dates: string;
+  summary: string;
+  /** The current role gets a solid accent timeline dot. */
+  current?: boolean;
+}
+
+export interface EducationItem {
+  /** Small uppercase label line, e.g. "MS · 2022–2024". */
+  label: string;
+  degree: string;
+  institution: string;
+  gpa: string;
+}
+
+export interface ExperienceContent {
+  roles: RoleItem[];
+  /** Visually hidden heading for the education cards. */
+  educationHeading: string;
+  education: EducationItem[];
+}
+
+export type PostType = "Carousel" | "Newsletter";
+
+export interface PostItem {
+  title: string;
+  type: PostType;
+  /** Omit for posts that are not published yet (rendered as a plain card). */
+  href?: string;
+}
+
+export interface NewsletterContent {
+  /** Which email service handles signups. null until one is chosen. */
+  provider: string | null;
+  /** Form POST endpoint. Empty = "launching soon" message, nothing is submitted. */
+  actionUrl: string;
+  heading: string;
+  subline: string;
+  emailLabel: string;
+  emailPlaceholder: string;
+  submitLabel: string;
+  invalidMessage: string;
+  unavailableMessage: string;
+}
+
+export interface WritingContent {
+  posts: PostItem[];
+  readLabel: string;
+  newsletter: NewsletterContent;
+}
+
+export interface OfferItem {
+  kind: "course" | "template" | "mentorship";
+  chip: string;
+  title: string;
+  description: string;
+  /** Shown in the bottom row instead of `status` once you set it. */
+  price?: string;
+  /** Bottom-row text while there is no price, e.g. "Waitlist open". */
+  status?: string;
+  /** The button is hidden until `href` is set. */
+  cta?: { label: string; href?: string };
+  /** Stronger border + full-width primary button (the featured offer). */
+  featured?: boolean;
+}
+
+export interface TestimonialItem {
+  quote: string;
+  name: string;
+  role: string;
+  initials: string;
+}
+
+export interface ContactContent {
+  emailLabel: string;
+  linkedinLabel: string;
+  resumeLabel: string;
+  chips: string[];
+}
+
 export interface SiteContent {
   name: string;
   /** Used in the header wordmark. */
@@ -91,9 +175,10 @@ export interface SiteContent {
     emailHref: string;
     /** Static file in /public. */
     resume: string;
+    /** Suggested filename when the resume is downloaded. */
+    resumeFilename: string;
   };
   footer: string;
-  comingSoon: string;
   /** Accessible labels and short UI strings. */
   labels: {
     skipToContent: string;
@@ -104,10 +189,16 @@ export interface SiteContent {
     resume: string;
     linkedin: string;
     email: string;
+    opensInNewTab: string;
   };
   hero: HeroContent;
   about: AboutContent;
   expertise: { items: ExpertiseItem[] };
   work: { items: CaseStudy[] };
+  experience: ExperienceContent;
+  writing: WritingContent;
+  offers: { items: OfferItem[] };
+  testimonials: { items: TestimonialItem[] };
+  contact: ContactContent;
   sections: Record<SectionKey, SectionIntro>;
 }

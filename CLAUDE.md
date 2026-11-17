@@ -27,10 +27,11 @@ app/                 routes, layout.tsx (skip-link, header, main, footer), globa
 components/ui/       primitives: Container, Section, SectionHeader, Eyebrow, Card, Chip, Button,
                      SocialIcon, TypewriterText
 components/layout/   Header, Footer, Backdrop, StarField (page chrome)
+components/forms/    client-side forms (NewsletterForm; provider comes from content/site.ts)
 components/sections/ one file per homepage section (Hero, About, Expertise, Work, Experience,
                      Writing, Offers, Testimonials, Contact)
 content/             site.ts = ALL copy and links; types.ts = their TypeScript types
-lib/                 small helpers (cn)
+lib/                 small helpers: cn (class names), links (isPlainAnchor, newTabProps)
 public/              static files (photo.jpg, resume PDF)
 design/              design reference (not shipped)
 ```
@@ -53,8 +54,10 @@ translucent tokens carry their own alpha (use as-is).
 | bg | #08080B | `bg-background` |
 | surface (glass) | rgba(22,22,32,0.72) | `bg-surface` |
 | surface-solid | #101018 | `bg-surface-solid` |
-| media-bg | #12121B | `bg-media` (case-study image area) |
-| border / border-soft / border-chip / border-strong | rgba(255,255,255, .08 / .10 / .12 / .18) | `border-border`, `border-border-soft`, `border-border-chip`, `border-border-strong` |
+| media-bg / field-bg / marker-bg | #12121B / #0E0E14 / #2A2A38 | `bg-media` (case-study image), `bg-field` (inputs), `bg-marker` (past-role dot) |
+| text-soft | #E2E4EC | `text-soft` (testimonial quote) |
+| error | #FCA5A5 | `text-error`, `border-error` (form errors, 8:1 on bg) |
+| border / border-soft / border-chip / border-field / border-strong | rgba(255,255,255, .08 / .10 / .12 / .16 / .18) | `border-border`, `border-border-soft`, `border-border-chip`, `border-border-field`, `border-border-strong` |
 | fill-subtle / fill-chip / fill-soft | rgba(255,255,255, .03 / .05 / .06) | `bg-fill-subtle`, `bg-fill-chip`, `bg-fill-soft` |
 | text | #F8FAFC | `text-foreground` |
 | text-muted | #B6BAC8 | `text-muted` |
@@ -69,7 +72,8 @@ Radii: card 20px `rounded-card`, inner 14px `rounded-inner`, pill 999px
 `rounded-pill`. Container: `<Container>` / `max-w-container`. Its *content* is
 1200px wide (the reference's container is content-box: 1200px + 24px gutters),
 so `max-w-container` is 1248px border-box; `max-w-content` is the bare 1200px
-(header pill). Type tokens: `text-display` (hero h1), `text-tagline`, `text-h2`
+(header pill). `Section`/`Container` take `width="timeline"` (960px content,
+experience) or `"narrow"` (900px, testimonials/contact). Type tokens: `text-display` (hero h1), `text-tagline`, `text-h2`
 (+ `font-heading`); `tracking-eyebrow`.
 
 **Matching the reference exactly:** the reference is content-box with no base
@@ -89,7 +93,9 @@ Brand colour is changed in one place: `--accent`, `--accent-text`,
    colour? Add a token first.
 2. **All copy lives in `content/`.** Components import from `content/site.ts`;
    they do not contain headings, paragraphs, labels or URLs. Type new content
-   in `content/types.ts`.
+   in `content/types.ts`. Anything the owner still has to supply is marked
+   `// TODO(chinmayi): ...` in `content/site.ts` (`grep -rn "TODO(chinmayi)" content`).
+   Optional fields (`price`, `cta.href`, a post's `href`) hide their UI until set.
 3. **Mobile-first, 360–1440px.** Write base styles for 360px, then add `sm:`,
    `lg:`. No horizontal scroll at any width in that range.
 4. **Semantic HTML.** One `<h1>`; sections are `<section aria-labelledby>`;
@@ -102,8 +108,11 @@ Brand colour is changed in one place: `--accent`, `--accent-text`,
 8. **Internal links use `next/link`.** Navigation hrefs are `/#id` so they work
    from any route. Files (PDF) and external URLs use `<a>`; `ui/Button` picks
    the right one automatically.
-9. **Use the shared UI**: `Section` + `SectionHeader` for sections, `Card`,
-   `Chip`, `Eyebrow`, `Button`. Do not re-style these ad hoc.
+9. **Use the shared UI**: `Section` + `SectionHeader` for sections, `Card`
+   (also a link via `href`), `Chip` (tones: default/muted/accent/overlay), `Eyebrow`,
+   `Button` (variants primary/secondary/outline; sizes lg/md/sm/field/block; link or
+   button). Do not re-style these ad hoc. External and file links are detected
+   automatically (`lib/links.ts`); pass `newTab` for a new tab.
 10. **No new dependencies without a reason**, and state the reason in the commit.
 11. Keep Server Components by default; add `"use client"` only for state,
     effects or browser APIs.

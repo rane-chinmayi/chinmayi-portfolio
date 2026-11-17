@@ -27,6 +27,8 @@
   --surface: rgba(22, 22, 32, 0.72); /* glass card */
   --surface-solid: 16 16 24; /* #101018 */
   --media-bg: 18 18 27; /* #12121B  case-study image area */
+  --field-bg: 14 14 20; /* #0E0E14  form inputs */
+  --marker-bg: 42 42 56; /* #2A2A38  past-role timeline dot */
 
   /* Borders and fills (translucent) */
   --border: rgba(255, 255, 255, 0.08);
@@ -36,6 +38,7 @@
   --fill-subtle: rgba(255, 255, 255, 0.03);
   --fill-chip: rgba(255, 255, 255, 0.05);
   --fill-soft: rgba(255, 255, 255, 0.06); /* icon tiles */
+  --border-field: rgba(255, 255, 255, 0.16); /* form inputs */
   --grid-line: rgba(255, 255, 255, 0.025);
 
   /* Text */
@@ -43,18 +46,22 @@
   --text-muted: 182 186 200; /* #B6BAC8 */
   --text-subtle: 138 142 160; /* #8A8EA0 */
   --chip-text: 228 222 255; /* #E4DEFF */
+  --text-soft: 226 228 236; /* #E2E4EC  testimonial quote */
 
   /* Accent (brand) */
   --accent: 46 91 255; /* #2E5BFF  fills, buttons */
   --accent-text: 143 168 255; /* #8FA8FF  accent text on dark */
   --accent-glow: rgba(46, 91, 255, 0.28);
   --on-accent: 255 255 255; /* text on accent fills */
+  --error: 252 165 165; /* #FCA5A5  form errors (8:1 on --bg) */
 
   /* Shape and layout */
   --radius-card: 20px;
   --radius-inner: 14px;
   --radius-pill: 999px;
   --container-max: 1200px;
+  --container-timeline: 960px; /* experience */
+  --container-narrow: 900px; /* testimonials, contact */
 }
 
 @media (prefers-reduced-motion: no-preference) {

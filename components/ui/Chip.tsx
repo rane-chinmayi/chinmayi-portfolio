@@ -1,13 +1,13 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
-type Tone = "default" | "muted" | "overlay";
+type Tone = "default" | "muted" | "accent" | "overlay";
 
 interface ChipProps {
   children: ReactNode;
   /**
-   * "muted": status chips (grey text). "overlay": sits on an image/gradient,
-   * with a dark translucent background.
+   * "muted": status chips (grey text). "accent": highlighted label. "overlay":
+   * sits on an image/gradient, with a dark translucent background.
    */
   tone?: Tone;
   className?: string;
@@ -16,6 +16,7 @@ interface ChipProps {
 const tones: Record<Tone, string> = {
   default: "bg-fill-chip text-chip",
   muted: "bg-fill-chip text-muted",
+  accent: "bg-fill-chip text-accent-text",
   overlay: "bg-background/70 text-chip",
 };
 

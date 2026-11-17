@@ -26,11 +26,13 @@ export const site: SiteContent = {
     linkedin: "https://www.linkedin.com/in/chinmayi-rane/",
     email: "chinmayi.m.rane@gmail.com",
     emailHref: "mailto:chinmayi.m.rane@gmail.com",
+    // TODO(chinmayi): add the PDF at public/Chinmayi-Rane-Resume.pdf (the Resume
+    // and "Download Resume" links 404 until it exists).
     resume: "/Chinmayi-Rane-Resume.pdf",
+    resumeFilename: "Chinmayi-Rane-Resume.pdf",
   },
 
   footer: "© 2026 Chinmayi Rane · AI × Product, made simple.",
-  comingSoon: "Coming soon.",
 
   labels: {
     skipToContent: "Skip to content",
@@ -41,6 +43,7 @@ export const site: SiteContent = {
     resume: "Resume",
     linkedin: "LinkedIn",
     email: "Email",
+    opensInNewTab: "(opens in a new tab)",
   },
 
   hero: {
@@ -166,6 +169,163 @@ export const site: SiteContent = {
     ],
   },
 
+  experience: {
+    roles: [
+      {
+        title: "Product Manager",
+        company: "YPoint Combinator (MapIoT AI)",
+        location: "Remote",
+        dates: "May 2025 – Present",
+        summary:
+          "PM for YPC Workspace and MSIS. Built a quantitative eligibility engine that made intern bonus selection objective and auditable.",
+        current: true,
+      },
+      {
+        title: "Graduate Research & Teaching Assistant",
+        company: "Oklahoma State University",
+        location: "USA",
+        dates: "Jan 2023 – Apr 2025",
+        summary:
+          "Strategy research with an NLP pipeline over 18,900+ records; taught Corporate Strategy and Programming for Data Science.",
+      },
+      {
+        title: "I-Corps Scholar",
+        company: "National Science Foundation",
+        location: "USA",
+        dates: "Aug 2023 – Jan 2024",
+        summary:
+          "Explored commercial viability of Elsa, a home healthcare robot, through 100+ customer interviews.",
+      },
+      {
+        title: "Software Developer",
+        company: "Innovation Foundation at OSU",
+        location: "USA",
+        dates: "Sept 2022 – Jan 2023",
+        summary:
+          "Built user-facing features for Healthy Homes Youth, an Android health-education app.",
+      },
+    ],
+    educationHeading: "Education",
+    education: [
+      {
+        label: "MS · 2022–2024",
+        degree: "Management Information Systems",
+        institution: "Oklahoma State University",
+        gpa: "GPA 3.83",
+      },
+      {
+        label: "BTech · 2019–2022",
+        degree: "Electrical & Telecom Engineering",
+        institution: "Sardar Patel Institute of Technology",
+        gpa: "GPA 3.70",
+      },
+    ],
+  },
+
+  writing: {
+    posts: [
+      {
+        title: "8 AI agent architectures and when to use each",
+        type: "Carousel",
+        // TODO(chinmayi): replace with the exact LinkedIn post URL for this carousel.
+        href: "https://www.linkedin.com/in/chinmayi-rane/recent-activity/all/",
+      },
+      {
+        title: "What happens after you hit Enter on ChatGPT",
+        type: "Carousel",
+        // TODO(chinmayi): replace with the exact LinkedIn post URL for this carousel.
+        href: "https://www.linkedin.com/in/chinmayi-rane/recent-activity/all/",
+      },
+      {
+        // TODO(chinmayi): when the newsletter launches, replace this with the
+        // latest issue's title and add its `href`.
+        title: "Newsletter launching soon",
+        type: "Newsletter",
+      },
+    ],
+    readLabel: "Read",
+    newsletter: {
+      // TODO(chinmayi): pick an email provider (Buttondown, ConvertKit, Mailchimp,
+      // Beehiiv...), then set `provider` and its form POST URL in `actionUrl`.
+      // While `actionUrl` is empty the form submits nothing and shows
+      // `unavailableMessage` instead.
+      provider: null,
+      actionUrl: "",
+      heading: "Get one AI idea a week, with the product lens.",
+      subline: "For PMs, founders and builders. No jargon, no hype.",
+      emailLabel: "Email",
+      emailPlaceholder: "you@company.com",
+      submitLabel: "Subscribe",
+      invalidMessage: "Enter a valid email address.",
+      unavailableMessage: "Newsletter launching soon. Check back shortly.",
+    },
+  },
+
+  // Each offer can take an optional `price` and a `cta.href`. Until then the
+  // card shows `status` and the button stays hidden/points at the newsletter.
+  offers: {
+    items: [
+      {
+        kind: "course",
+        chip: "Course · Coming soon",
+        // TODO(chinmayi): confirm the course name and description.
+        title: "AI Product Management, From Zero to Shipped",
+        description:
+          "A practical course for PMs who want to scope, prototype and ship their first AI feature.",
+        // TODO(chinmayi): set `price` when you have one (it replaces `status`).
+        status: "Waitlist open",
+        // TODO(chinmayi): point this at a waitlist form once you have one.
+        cta: { label: "Join waitlist", href: "/#writing" },
+      },
+      {
+        kind: "template",
+        chip: "Template",
+        // TODO(chinmayi): confirm the template name and description.
+        title: "The AI PRD Template",
+        description:
+          "The PRD structure I used to unblock engineering on an AI operating layer.",
+        // TODO(chinmayi): set `price` and a purchase link when it is ready.
+        status: "Coming soon",
+        cta: { label: "Get notified", href: "/#writing" },
+      },
+      {
+        kind: "mentorship",
+        chip: "1:1 Mentorship",
+        title: "Breaking into AI PM",
+        description:
+          "Career moves from engineering to product, portfolio reviews and AI PM interview prep.",
+        // TODO(chinmayi): optionally add a `price`.
+        featured: true,
+        cta: {
+          label: "Book a session",
+          // TODO(chinmayi): replace the mailto with a Calendly or Topmate link.
+          href: "mailto:chinmayi.m.rane@gmail.com?subject=Mentorship%20session",
+        },
+      },
+    ],
+  },
+
+  // Add more testimonials by appending to this array: one renders as a single
+  // centred card, two or more become a grid.
+  testimonials: {
+    items: [
+      {
+        quote:
+          "Chinmayi Rane is thoughtful, capable and consistent in her character through professional and social situations. While serving as a Graduate Teaching Assistant, she supported differing faculty members who, term over term, equally rated her work exceptionally high. Chinmayi Rane has my full-fledged endorsement.",
+        name: "Kenneth Kern",
+        role: "Director, Business Graduate Programs, Oklahoma State University",
+        initials: "KK",
+      },
+    ],
+  },
+
+  contact: {
+    emailLabel: "Email Me",
+    linkedinLabel: "LinkedIn",
+    resumeLabel: "Download Resume",
+    chips: ["Mumbai → London", "Open to hybrid or on-site", "Available for advisory"],
+  },
+
   // Section headings, taken from design/design-reference.html.
   sections: {
     about: { eyebrow: "About", title: "A Bit About Me" },
@@ -196,7 +356,8 @@ export const site: SiteContent = {
     },
     testimonials: { eyebrow: "Testimonials", title: "Kind Words" },
     contact: {
-      title: "Let's Make Something Simple Together",
+      // "\n" marks the desktop line break (see SectionHeader).
+      title: "Let's Make Something\nSimple Together",
       lead: "Hiring an AI PM, looking for a collaborator, or want help shipping your first AI feature? I'd love to hear from you.",
     },
   },

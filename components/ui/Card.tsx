@@ -1,15 +1,16 @@
 import Link from "next/link";
 import type { AnchorHTMLAttributes, HTMLAttributes } from "react";
 import { cn } from "@/lib/cn";
+import { isPlainAnchor, newTabProps } from "@/lib/links";
 
 type Surface = "glass" | "solid";
-type Edge = "default" | "raised";
+type Edge = "default" | "raised" | "strong";
 type CardElement = "div" | "article" | "li" | "figure" | "section";
 
 interface StyleProps {
   /** "glass" = translucent surface; "solid" = near-opaque (floating badges). */
   surface?: Surface;
-  /** "raised" = slightly stronger border (e.g. the photo frame). */
+  /** "raised" = slightly stronger border (photo frame); "strong" = featured card. */
   edge?: Edge;
   /** Hover: border brightens and the card lifts (not under reduced motion). */
   interactive?: boolean;
@@ -19,7 +20,11 @@ type BoxProps = StyleProps &
   HTMLAttributes<HTMLElement> & { as?: CardElement; href?: undefined };
 
 type LinkCardProps = StyleProps &
-  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href"> & { href: string };
+  Omit<AnchorHTMLAttributes<HTMLAnchorElement>, "href"> & {
+    href: string;
+    /** Opens in a new tab with rel="noopener noreferrer". */
+    newTab?: boolean;
+  };
 
 export type CardProps = BoxProps | LinkCardProps;
 
@@ -33,6 +38,7 @@ const surfaces: Record<Surface, string> = {
 const edges: Record<Edge, string> = {
   default: "border-border",
   raised: "border-border-chip",
+  strong: "border-border-strong",
 };
 
 const lift =
@@ -45,24 +51,25 @@ export default function Card(props: CardProps) {
       surface = "glass",
       edge = "default",
       interactive = true,
+      newTab,
       className,
       href,
       ...rest
     } = props;
-    return (
-      <Link
-        href={href}
-        className={cn(
-          base,
-          surfaces[surface],
-          edges[edge],
-          "block",
-          interactive && lift,
-          className,
-        )}
-        {...rest}
-      />
+    const classes = cn(
+      base,
+      surfaces[surface],
+      edges[edge],
+      "block",
+      interactive && lift,
+      className,
     );
+    const extra = newTab ? newTabProps : {};
+
+    if (isPlainAnchor(href)) {
+      return <a href={href} className={classes} {...extra} {...rest} />;
+    }
+    return <Link href={href} className={classes} {...extra} {...rest} />;
   }
 
   const {

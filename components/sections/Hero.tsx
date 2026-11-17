@@ -75,7 +75,7 @@ export default function Hero() {
               href={links.linkedin}
               target="_blank"
               rel="noopener noreferrer"
-              aria-label={labels.linkedin}
+              aria-label={`${labels.linkedin} ${labels.opensInNewTab}`}
               className={iconLinkClass}
             >
               <SocialIcon kind="linkedin" className="size-[18px]" />

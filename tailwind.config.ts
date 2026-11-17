@@ -22,14 +22,17 @@ const config: Config = {
           DEFAULT: "var(--surface)",
           solid: "rgb(var(--surface-solid) / <alpha-value>)",
         },
+        media: "rgb(var(--media-bg) / <alpha-value>)",
         border: {
           DEFAULT: "var(--border)",
+          soft: "var(--border-soft)",
           strong: "var(--border-strong)",
           chip: "var(--border-chip)",
         },
         fill: {
           subtle: "var(--fill-subtle)",
           chip: "var(--fill-chip)",
+          soft: "var(--fill-soft)",
         },
         accent: {
           DEFAULT: "rgb(var(--accent) / <alpha-value>)",
@@ -41,10 +44,17 @@ const config: Config = {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
         heading: ["var(--font-poppins)", "system-ui", "sans-serif"],
       },
+      // No line-height here on purpose: it inherits `normal` from <body>,
+      // matching the reference.
       fontSize: {
+        display: [
+          "clamp(48px, 6vw, 76px)",
+          { lineHeight: "1.05", letterSpacing: "-0.03em", fontWeight: "800" },
+        ],
+        tagline: ["clamp(24px, 3vw, 34px)", { fontWeight: "700" }],
         h2: [
           "clamp(34px, 4vw, 48px)",
-          { lineHeight: "1.15", letterSpacing: "-0.02em", fontWeight: "700" },
+          { letterSpacing: "-0.02em", fontWeight: "700" },
         ],
       },
       letterSpacing: {
@@ -56,7 +66,11 @@ const config: Config = {
         pill: "var(--radius-pill)",
       },
       maxWidth: {
-        container: "var(--container-max)",
+        // `container` = content width + the 2×24px gutters (Container is border-box),
+        // so content is exactly --container-max wide, as in the reference.
+        container: "calc(var(--container-max) + 3rem)",
+        // `content` = the bare content width (header pill).
+        content: "var(--container-max)",
       },
       boxShadow: {
         glow: "0 8px 32px var(--accent-glow)",

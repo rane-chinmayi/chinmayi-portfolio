@@ -1,5 +1,6 @@
 import { cn } from "@/lib/cn";
 import Eyebrow from "./Eyebrow";
+import Lead from "./Lead";
 
 interface SectionHeaderProps {
   /** The section's id. The heading gets `${id}-title` (used by aria-labelledby). */
@@ -30,11 +31,7 @@ export default function SectionHeader({
       >
         {title}
       </h2>
-      {lead && (
-        <p className="mx-auto max-w-[640px] text-[17px] leading-[1.65] text-muted">
-          {lead}
-        </p>
-      )}
+      {lead && <Lead>{lead}</Lead>}
     </div>
   );
 }

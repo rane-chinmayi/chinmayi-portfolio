@@ -53,8 +53,9 @@ translucent tokens carry their own alpha (use as-is).
 | bg | #08080B | `bg-background` |
 | surface (glass) | rgba(22,22,32,0.72) | `bg-surface` |
 | surface-solid | #101018 | `bg-surface-solid` |
-| border / border-strong / border-chip | rgba(255,255,255, .08 / .18 / .12) | `border-border`, `border-border-strong`, `border-border-chip` |
-| fill-subtle / fill-chip | rgba(255,255,255, .03 / .05) | `bg-fill-subtle`, `bg-fill-chip` |
+| media-bg | #12121B | `bg-media` (case-study image area) |
+| border / border-soft / border-chip / border-strong | rgba(255,255,255, .08 / .10 / .12 / .18) | `border-border`, `border-border-soft`, `border-border-chip`, `border-border-strong` |
+| fill-subtle / fill-chip / fill-soft | rgba(255,255,255, .03 / .05 / .06) | `bg-fill-subtle`, `bg-fill-chip`, `bg-fill-soft` |
 | text | #F8FAFC | `text-foreground` |
 | text-muted | #B6BAC8 | `text-muted` |
 | text-subtle | #8A8EA0 | `text-subtle` |
@@ -65,8 +66,18 @@ translucent tokens carry their own alpha (use as-is).
 | on-accent | #FFFFFF | `text-on-accent` |
 
 Radii: card 20px `rounded-card`, inner 14px `rounded-inner`, pill 999px
-`rounded-pill`. Container: `max-w-container` (1200px). Section titles:
-`text-h2` + `font-heading`. Eyebrows: `tracking-eyebrow`.
+`rounded-pill`. Container: `<Container>` / `max-w-container`. Its *content* is
+1200px wide (the reference's container is content-box: 1200px + 24px gutters),
+so `max-w-container` is 1248px border-box; `max-w-content` is the bare 1200px
+(header pill). Type tokens: `text-display` (hero h1), `text-tagline`, `text-h2`
+(+ `font-heading`); `tracking-eyebrow`.
+
+**Matching the reference exactly:** the reference is content-box with no base
+line-height, so `<body>` sets `line-height: normal`. For text that must match it,
+use `text-[Npx]` (no line-height) rather than `text-xs`/`text-sm`/`text-base`,
+which add Tailwind's own line-heights. The reference's stated "44px tile /
+40px icon / 180px image" are content-box, so they render at 46 / 42 / 220px;
+we match what renders.
 
 Brand colour is changed in one place: `--accent`, `--accent-text`,
 `--accent-glow` in `globals.css` (a violet alternative is in the comment there).
@@ -102,5 +113,17 @@ Brand colour is changed in one place: `--accent`, `--accent-text`,
 
 - The project sits inside OneDrive. If the dev server throws `EBUSY`/`ENOENT`
   on `.next/`, stop it, delete `.next`, and restart.
+- **Never run two `next dev` (or a `next build`) against the same `.next`.** They
+  overwrite each other's files, and a long-running dev server keeps serving stale
+  CSS (missing new Tailwind classes) after `.next` is rebuilt or the Tailwind
+  config changes. Restart `next dev` after editing `tailwind.config.ts`. For a
+  second server or a build, use a separate folder:
+  `NEXT_DIST_DIR=.next-preview npx next dev -p 3002` and
+  `NEXT_DIST_DIR=.next-build npm run build` (`/.next-*/` is git-ignored).
+  Next then appends that folder to `tsconfig.json` `include`; undo it with
+  `git checkout -- tsconfig.json` before committing.
+- Visual checks: serve the reference with `python -m http.server 4000 --directory design`
+  and compare against the dev server **in the same browser tab**; different
+  device-pixel-ratios shift borders and rounding by up to 1px.
 - `public/Chinmayi-Rane-Resume.pdf` must be added by hand; until then the
   Resume links 404.

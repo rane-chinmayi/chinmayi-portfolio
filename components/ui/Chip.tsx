@@ -1,20 +1,35 @@
 import type { ReactNode } from "react";
 import { cn } from "@/lib/cn";
 
+type Tone = "default" | "muted" | "overlay";
+
 interface ChipProps {
   children: ReactNode;
-  /** "muted" is for chips that carry status (e.g. availability) rather than a label. */
-  tone?: "default" | "muted";
+  /**
+   * "muted": status chips (grey text). "overlay": sits on an image/gradient,
+   * with a dark translucent background.
+   */
+  tone?: Tone;
   className?: string;
 }
 
+const tones: Record<Tone, string> = {
+  default: "bg-fill-chip text-chip",
+  muted: "bg-fill-chip text-muted",
+  overlay: "bg-background/70 text-chip",
+};
+
 /** Small pill label (13px). */
-export default function Chip({ children, tone = "default", className }: ChipProps) {
+export default function Chip({
+  children,
+  tone = "default",
+  className,
+}: ChipProps) {
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-pill border border-border-chip bg-fill-chip px-3 py-1.5 text-[13px] font-medium",
-        tone === "muted" ? "text-muted" : "text-chip",
+        "inline-flex items-center gap-1.5 rounded-pill border border-border-chip px-3 py-1.5 text-[13px] font-medium",
+        tones[tone],
         className,
       )}
     >

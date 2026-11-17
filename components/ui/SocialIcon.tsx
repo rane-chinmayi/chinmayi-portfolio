@@ -6,7 +6,8 @@ interface SocialIconProps {
 }
 
 /**
- * lucide-react 1.x no longer ships brand icons, so LinkedIn is an inline SVG.
+ * lucide-react 1.x no longer ships brand icons, so LinkedIn is an inline SVG
+ * in lucide's outline style (same 2px stroke as the Mail icon next to it).
  * Everything else comes from lucide-react.
  */
 export default function SocialIcon({ kind, className }: SocialIconProps) {
@@ -17,11 +18,17 @@ export default function SocialIcon({ kind, className }: SocialIconProps) {
     <svg
       xmlns="http://www.w3.org/2000/svg"
       viewBox="0 0 24 24"
-      fill="currentColor"
+      fill="none"
+      stroke="currentColor"
+      strokeWidth="2"
+      strokeLinecap="round"
+      strokeLinejoin="round"
       className={className}
       aria-hidden="true"
     >
-      <path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.446-2.136 2.94v5.666H9.351V9h3.414v1.561h.049c.476-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 1 1 0-4.124 2.062 2.062 0 0 1 0 4.124zM7.114 20.452H3.558V9h3.556v11.452z" />
+      <path d="M16 8a6 6 0 0 1 6 6v7h-4v-7a2 2 0 0 0-4 0v7h-4v-7a6 6 0 0 1 6-6z" />
+      <rect x="2" y="9" width="4" height="12" />
+      <circle cx="4" cy="4" r="2" />
     </svg>
   );
 }

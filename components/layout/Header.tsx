@@ -62,12 +62,12 @@ export default function Header() {
   return (
     <header
       ref={headerRef}
-      className="fixed inset-x-0 top-0 z-50 px-4 pt-4 sm:px-6"
+      className="fixed inset-x-0 top-0 z-50 px-4 pt-5 sm:px-6"
     >
-      <div className="relative mx-auto max-w-container">
+      <div className="relative mx-auto max-w-content">
         <div
           className={cn(
-            "flex items-center justify-between rounded-pill border bg-surface-solid/[0.78] py-3 pl-6 pr-3 backdrop-blur-md transition-[border-color,box-shadow] duration-300 lg:pl-7 lg:pr-[18px]",
+            "flex items-center justify-between rounded-pill border bg-surface-solid/[0.78] py-3.5 pl-6 pr-3 backdrop-blur-md transition-[border-color,box-shadow] duration-300 lg:pl-7 lg:pr-[18px]",
             isScrolled
               ? "border-border-strong shadow-elevated"
               : "border-border",
@@ -89,7 +89,7 @@ export default function Header() {
                   <li key={link.href}>
                     <Link
                       href={link.href}
-                      className="text-sm font-medium text-muted transition-colors hover:text-foreground"
+                      className="text-[14px] font-medium text-muted transition-colors hover:text-foreground"
                     >
                       {link.label}
                     </Link>
@@ -97,7 +97,7 @@ export default function Header() {
                 ))}
               </ul>
             </nav>
-            <Button href={site.links.resume} newTab size="sm">
+            <Button href={site.links.resume} newTab size="sm" glow={false}>
               {site.labels.resume}
             </Button>
           </div>
@@ -145,6 +145,7 @@ export default function Header() {
           <Button
             href={site.links.resume}
             newTab
+            glow={false}
             onClick={closeMenu}
             className="mt-3 w-full"
           >

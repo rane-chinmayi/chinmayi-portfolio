@@ -26,13 +26,16 @@
   --bg: 8 8 11; /* #08080B */
   --surface: rgba(22, 22, 32, 0.72); /* glass card */
   --surface-solid: 16 16 24; /* #101018 */
+  --media-bg: 18 18 27; /* #12121B  case-study image area */
 
   /* Borders and fills (translucent) */
   --border: rgba(255, 255, 255, 0.08);
   --border-strong: rgba(255, 255, 255, 0.18);
+  --border-soft: rgba(255, 255, 255, 0.1); /* eyebrow, icon tiles */
   --border-chip: rgba(255, 255, 255, 0.12);
   --fill-subtle: rgba(255, 255, 255, 0.03);
   --fill-chip: rgba(255, 255, 255, 0.05);
+  --fill-soft: rgba(255, 255, 255, 0.06); /* icon tiles */
   --grid-line: rgba(255, 255, 255, 0.025);
 
   /* Text */
@@ -65,6 +68,9 @@ html {
 }
 
 body {
+  /* The reference sets no base line-height (browser "normal"), and sets an
+     explicit one only where it matters. Match that, rather than Tailwind's 1.5. */
+  line-height: normal;
   color: rgb(var(--text));
   background-color: rgb(var(--bg));
   /* faint 64px line grid */

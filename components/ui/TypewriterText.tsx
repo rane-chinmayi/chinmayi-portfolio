@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useState } from "react";
+import { cn } from "@/lib/cn";
 
 interface TypewriterTextProps {
   texts: string[];
@@ -8,12 +9,18 @@ interface TypewriterTextProps {
   deletingSpeed?: number;
   pauseDuration?: number;
   className?: string;
+  /** Extra classes for the blinking cursor (e.g. a different colour/weight). */
+  cursorClassName?: string;
 }
 
 /**
  * Types, pauses, deletes and loops through `texts`.
- * With prefers-reduced-motion it shows the first text, static. All texts are
- * available to screen readers and crawlers via an sr-only copy.
+ *
+ * - The first text is fully shown on the server and on first paint, then the
+ *   loop starts by deleting it. With prefers-reduced-motion it stays put.
+ * - No layout shift: every text is rendered invisibly in the same grid cell,
+ *   so the element is always as tall as the tallest text at the current width.
+ * - Screen readers get the first text once (sr-only); the animation is hidden.
  */
 export default function TypewriterText({
   texts,
@@ -21,9 +28,10 @@ export default function TypewriterText({
   deletingSpeed = 35,
   pauseDuration = 1750,
   className,
+  cursorClassName,
 }: TypewriterTextProps) {
   const [textIndex, setTextIndex] = useState(0);
-  const [charIndex, setCharIndex] = useState(0);
+  const [charIndex, setCharIndex] = useState(() => texts[0].length);
   const [isDeleting, setIsDeleting] = useState(false);
   const [reduceMotion, setReduceMotion] = useState(false);
 
@@ -67,11 +75,22 @@ export default function TypewriterText({
   ]);
 
   return (
-    <span className={className}>
-      <span className="sr-only">{texts.join(" ")}</span>
-      <span aria-hidden="true">
+    <span className={cn("grid", className)}>
+      <span className="sr-only">{texts[0]}</span>
+      {texts.map((text) => (
+        <span
+          key={text}
+          aria-hidden="true"
+          className="invisible col-start-1 row-start-1"
+        >
+          {text}|
+        </span>
+      ))}
+      <span aria-hidden="true" className="col-start-1 row-start-1">
         {reduceMotion ? texts[0] : texts[textIndex].slice(0, charIndex)}
-        {!reduceMotion && <span className="animate-blink">|</span>}
+        {!reduceMotion && (
+          <span className={cn("animate-blink", cursorClassName)}>|</span>
+        )}
       </span>
     </span>
   );

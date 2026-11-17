@@ -3,7 +3,6 @@ import type { SiteContent } from "./types";
 /**
  * Single source of truth for site copy and links.
  * Components import from here; they do not hard-code text or URLs.
- * Later steps add the full section content to this file.
  */
 export const site: SiteContent = {
   name: "Chinmayi Rane",
@@ -44,29 +43,127 @@ export const site: SiteContent = {
     email: "Email",
   },
 
-  // Current hero copy, unchanged. Step 2 reworks the hero.
   hero: {
-    eyebrow: "Welcome to my portfolio",
+    eyebrow: "AI × Product, made simple",
     greeting: "Hi, I'm",
     name: "Chinmayi Rane.",
     rotatingTaglines: [
-      "I drive product strategy.",
-      "I grow products with data.",
-      "I build 0→1 products.",
-      "I build AI products.",
-      "I turn ideas into products.",
-      "I launch products that matter.",
+      "I turn messy problems into simple AI products.",
+      "I build AI products people actually use.",
+      "I explain AI in plain language.",
+      "I take products from 0→1.",
     ],
-    bio: "Product Manager with 1+ years of experience building SaaS and AI products. I partner with users, designers, engineers, and stakeholders to take products from discovery through launch and continuous product growth.",
+    bio: [
+      "AI Product Manager who started in electronics engineering and moved toward the ",
+      { em: "why" },
+      " behind what we build. I ship AI platforms, write about applied AI for PMs and founders, and teach what I learn along the way.",
+    ],
     primaryCta: { label: "View My Work", href: "/#work" },
     secondaryCta: { label: "Get In Touch", href: "/#contact" },
-    chips: [
-      "Available for Product Management Opportunities",
-      "Product Advisory & Mentorship",
-    ],
+    chips: ["Open to AI PM roles in London", "Weekly newsletter on applied AI"],
     connectLabel: "Connect",
-    photo: { src: "/photo.jpg", alt: "Chinmayi Rane" },
-    badge: { value: "1+", line1: "Years", line2: "Experience" },
+    // The source photo is landscape (920×809); 65% keeps the face centred in the 4:5 crop.
+    photo: { src: "/photo.jpg", alt: "Chinmayi Rane", objectPosition: "65% center" },
+    statBadge: { value: "30+", lines: ["daily users on", "my latest product"] },
+    awardBadge: { value: "2×", label: "IEEE published" },
+  },
+
+  about: {
+    paragraphs: [
+      [
+        "I graduated as an Electronics & Telecom engineer, built things close to the code, and realised I cared more about ",
+        { em: "why" },
+        " we build than how. Today I work where technology meets people: what problem does this solve, who benefits, and how do we know it's working?",
+      ],
+      [
+        "I'm based in Mumbai and relocating to London. Alongside product work, I write about startups, growth and applied AI, focused on real decisions rather than theory.",
+      ],
+    ],
+    stats: [
+      { value: "30+", label: "Daily active users" },
+      { value: "100+", label: "Customer interviews" },
+      { value: "18.9K", label: "Records in my NLP pipeline" },
+      { value: "2", label: "IEEE publications" },
+    ],
+  },
+
+  expertise: {
+    items: [
+      {
+        icon: "search",
+        title: "Discovery & Strategy",
+        description:
+          "Customer interviews, on-site visits and competitive analysis that change what we build, like pivoting MSIS to a modular API architecture.",
+        chips: [
+          "User Research",
+          "GTM Strategy",
+          "Competitive Analysis",
+          "Roadmapping",
+        ],
+      },
+      {
+        icon: "sparkles",
+        title: "AI Product Development",
+        description:
+          "Technical PRDs and MCP-based architecture for AI layers, natural-language querying and copilot roadmaps that unblock engineering.",
+        chips: ["Generative AI", "Agentic AI", "MCP Architecture", "NLP"],
+      },
+      {
+        icon: "code",
+        title: "Prototyping & Delivery",
+        description:
+          "AI-assisted prototypes clients can click through, cutting feedback cycles from weeks to two days, then shipping with Agile and UAT.",
+        chips: ["Claude Code", "Lovable", "Figma", "UAT"],
+      },
+      {
+        icon: "chart",
+        title: "Data & Metrics",
+        description:
+          "Metrics definitions, funnels and scoring models that make decisions objective and auditable instead of gut calls.",
+        chips: ["Python", "SQL", "Mixpanel", "Tableau"],
+      },
+    ],
+  },
+
+  work: {
+    items: [
+      {
+        slug: "ypc-workspace",
+        chip: "0→1 Platform · Claude Code",
+        title: "YPC Workspace",
+        description:
+          "Sole builder and PM of a company management platform for hiring, projects and internships, with database-level permissions across 5 roles.",
+        outcome: "30+ daily active users",
+        glowPosition: "30% 40%",
+      },
+      {
+        slug: "msis",
+        chip: "AI Layer · MCP",
+        title: "MakerSpace Information Systems",
+        description:
+          "Led a team of 6 and specced an AI operating layer with natural-language querying for lab management and analytics.",
+        outcome: "Feedback cycles: weeks → 2 days",
+        glowPosition: "70% 30%",
+      },
+      {
+        slug: "elsa",
+        chip: "GTM · NSF I-Corps",
+        title: "Elsa, an elder-care robot",
+        description:
+          "Shaped B2B/B2C go-to-market and a dual-revenue pricing model, validated with an AI simulation layer.",
+        outcome: "100+ customer interviews",
+        glowPosition: "40% 70%",
+      },
+      {
+        slug: "nlp-analyst-research",
+        chip: "NLP · Research",
+        title: "Analyst experience, decoded",
+        description:
+          "A Python NLP pipeline (spaCy, YAKE) that replaced manual keyword extraction across financial-services Glassdoor reviews.",
+        outcome: "18,900+ records processed",
+        glowPosition: "75% 65%",
+      },
+    ],
   },
 
   // Section headings, taken from design/design-reference.html.
@@ -104,3 +201,8 @@ export const site: SiteContent = {
     },
   },
 };
+
+/** URL of a case-study page. The pages themselves arrive in a later step. */
+export function caseStudyHref(slug: string): string {
+  return `/work/${slug}`;
+}

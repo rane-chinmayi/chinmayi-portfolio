@@ -7,7 +7,7 @@ interface SectionProps {
   id: string;
   /** id of the heading that names this region. Defaults to `${id}-title`. */
   labelledBy?: string;
-  /** "none" lets a section (e.g. the hero) set its own vertical spacing. */
+  /** "default" = bottom spacing only. "none" lets a section (the hero) set its own. */
   padding?: "default" | "none";
   className?: string;
   containerClassName?: string;
@@ -29,7 +29,8 @@ export default function Section({
       aria-labelledby={labelledBy}
       className={cn(
         "relative",
-        padding === "default" && "py-16 sm:py-24 lg:py-28",
+        // Reference rhythm: no top padding, 120px below each section.
+        padding === "default" && "pb-20 md:pb-[120px]",
         className,
       )}
     >

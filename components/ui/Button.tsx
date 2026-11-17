@@ -12,6 +12,8 @@ type Size = "md" | "sm";
 interface CommonProps {
   variant?: Variant;
   size?: Size;
+  /** Resting glow under a primary button. On by default; off for nav buttons. */
+  glow?: boolean;
   className?: string;
   children: ReactNode;
 }
@@ -32,15 +34,15 @@ const base =
   "inline-flex items-center justify-center gap-2 rounded-pill border font-semibold transition duration-200 motion-reduce:transition-none";
 
 const variants: Record<Variant, string> = {
-  primary:
-    "border-transparent bg-accent text-on-accent shadow-glow hover:brightness-110",
+  primary: "border-transparent bg-accent text-on-accent hover:brightness-110",
   secondary:
     "border-border-strong bg-fill-subtle text-foreground hover:bg-fill-chip",
 };
 
+// Padding includes the 1px border, so primary and secondary are the same size.
 const sizes: Record<Size, string> = {
-  md: "px-7 py-3.5 text-base",
-  sm: "px-5 py-2.5 text-sm",
+  md: "px-[27px] py-3.5 text-[16px]",
+  sm: "px-[19px] py-[9px] text-[14px]",
 };
 
 /**
@@ -56,13 +58,20 @@ export default function Button(props: ButtonProps) {
     const {
       variant = "primary",
       size = "md",
+      glow = true,
       className,
       children,
       href,
       newTab,
       ...rest
     } = props;
-    const classes = cn(base, variants[variant], sizes[size], className);
+    const classes = cn(
+      base,
+      variants[variant],
+      variant === "primary" && glow && "shadow-glow",
+      sizes[size],
+      className,
+    );
     const newTabProps = newTab
       ? { target: "_blank", rel: "noopener noreferrer" }
       : {};
@@ -84,6 +93,7 @@ export default function Button(props: ButtonProps) {
   const {
     variant = "primary",
     size = "md",
+    glow = true,
     className,
     children,
     ...rest
@@ -91,7 +101,13 @@ export default function Button(props: ButtonProps) {
   return (
     <button
       type="button"
-      className={cn(base, variants[variant], sizes[size], className)}
+      className={cn(
+        base,
+        variants[variant],
+        variant === "primary" && glow && "shadow-glow",
+        sizes[size],
+        className,
+      )}
       {...rest}
     >
       {children}

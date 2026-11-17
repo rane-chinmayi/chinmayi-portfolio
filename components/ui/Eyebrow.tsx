@@ -12,7 +12,7 @@ export default function Eyebrow({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-2 rounded-pill border border-border bg-fill-subtle px-4 py-2 text-xs font-semibold uppercase tracking-eyebrow text-muted",
+        "inline-flex items-center gap-2 rounded-pill border border-border-soft bg-fill-subtle px-4 py-2 text-[12px] font-semibold uppercase tracking-eyebrow text-muted",
         className,
       )}
     >

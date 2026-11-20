@@ -1,0 +1,99 @@
+---
+title: "Diagnosing Wise's KYC Drop-Off"
+slug: wise-kyc-funnel
+summary: "A funnel analysis that pinpoints KYC ID submission as Wise's biggest onboarding leak (32.9% abandonment), a competitive teardown against Revolut and Monzo, and a statistically powered A/B test targeting a 7-point lift."
+category: "Product Analytics · FinTech"
+role: "Independent product analysis"
+timeline: "June 2026"
+tools: ["Python", "SQL", "Looker Studio", "DB Browser for SQLite"]
+tags: ["Funnel Analysis", "SQL Analysis", "Experiment Design", "A/B Testing", "FinTech Analysis"]
+featured: true
+order: 2
+metrics:
+  - value: "32.9%"
+    label: "drop-off at KYC ID submission"
+  - value: "2,194"
+    label: "users lost per 10,000 sign-ups"
+  - value: "+7 pts"
+    label: "target lift in KYC submission"
+  - value: "1,372"
+    label: "users needed for a powered test"
+links:
+  - label: "Interactive dashboard"
+    href: "https://datastudio.google.com/reporting/f03d4cb3-c6b9-469c-80da-7177ca76b214"
+---
+
+## Why this matters
+
+Wise only makes money when users finish onboarding and send their first transfer. Unlike SaaS, where you can win users back with emails or offers, a failed KYC usually means the user switches to Revolut or Monzo and never returns. For a neobank, onboarding completion isn't a growth metric. It's existential.
+
+## How I approached it
+
+- **Lived the product:** signed up for Wise and documented every screen of a 22-step onboarding flow
+- **Listened to users:** read public feedback on Trustpilot, Reddit and app store reviews
+- **Benchmarked:** compared Wise's onboarding with Revolut and Monzo
+- **Modelled the funnel:** built a simulated 10,000-user dataset in Python based on published fintech onboarding benchmarks
+- **Queried it:** ran 5 SQL queries to find drop-off patterns, then visualised them in Looker Studio
+
+<Callout title="A note on the data">
+Real Wise data isn't public, so the funnel uses a simulated dataset built from industry benchmarks (typical KYC completion of 60–75% for digital banks). The product observations and user research are real.
+</Callout>
+
+## The funnel
+
+| Step | Users | Drop-off |
+| --- | --- | --- |
+| Signed up | 10,000 | — |
+| Verified email | 7,815 | 21.9% |
+| Personal details | 6,667 | 14.7% |
+| **KYC submitted** | **4,473** | **32.9%** |
+| Liveness check | 3,159 | 29.4% |
+| First transfer | 1,839 | 41.8% |
+
+<Figure src="/work/wise-kyc-funnel/funnel.png" alt="Wise onboarding funnel chart for 10,000 simulated users" />
+<Figure src="/work/wise-kyc-funnel/dropoff.png" alt="Drop-off rate at each onboarding step" />
+
+**KYC ID submission is the single biggest leak in the flow (32.9%).** For every 10,000 sign-ups, 2,194 users are lost at this one step.
+
+### Why users drop
+Going through the flow myself, the document requirement appeared mid-journey, after I'd already set an amount and added a recipient, with no warning about which documents were needed or how long verification takes. Public feedback told the same story: unexpected document requirements, photos rejected for glare or cropped corners, and no explanation when verification fails. Reddit threads described rejected employment contracts with no guidance on alternatives, and repeated re-verification ending in account closure.
+
+**Users aren't unwilling to verify. They're blindsided by the process.**
+
+## Competitive teardown
+
+| | Wise | Revolut | Monzo |
+| --- | --- | --- | --- |
+| Onboarding | ~14 screens | ~5 steps, app-only | ~5 steps, app-first |
+| KYC timing | Mid-transfer flow | During sign-up | During sign-up |
+| India availability | Full access | Controlled beta | Not available |
+| Biggest friction | No advance warning of document needs | Opaque when verification stalls | Manual review delays |
+| Does well | Fee transparency, UPI auto-detection | Speed on simple cases | Layered automated verification |
+
+Wise is the only one of the three that springs KYC on users mid-journey. Revolut and Monzo verify upfront, so users know what's coming before they invest time. And because Revolut is still in beta in India, Indian users, who face the most document-heavy path on Wise, don't yet have a direct alternative. That window won't stay open.
+
+## The experiment
+
+**Hypothesis:** if we show a pre-KYC explainer (accepted documents, expected time, what happens next), KYC submission will rise from 67.1% to 74%, because users abandon out of uncertainty, not unwillingness.
+
+| Control (A) | Variant (B) |
+| --- | --- |
+| Personal details → KYC upload, no context | Personal details → explainer screen (accepted documents, 2–5 min estimate, next steps, "60% complete" progress) → KYC upload |
+
+**Metrics**
+- **Primary:** KYC ID submission rate, 67.1% → 74%
+- **Secondary:** overall activation, 18.4% → ~21%
+- **Guardrail:** time to KYC submission, so motivated users aren't slowed down
+
+**Sample size:** a two-proportion z-test (α = 0.05, 80% power) needs **686 users per variant, 1,372 in total**, about 1–2 weeks of traffic.
+
+**Decision rules**
+- B wins at 95% significance → ship to 100% and watch the guardrail for 2 weeks
+- B loses → interview users who dropped at KYC to find the real cause
+- Inconclusive → extend one week, then reassess
+
+## Next steps
+
+1. Run the pre-KYC explainer experiment.
+2. Segment KYC drop-off by country. Indian users face document uploads UK and US users don't, which points to a targeted fix for high-friction markets.
+3. Tackle the second-biggest leak, the liveness check (29.4%), with a separate experiment on real-time camera guidance.

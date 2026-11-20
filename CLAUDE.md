@@ -30,8 +30,13 @@ components/layout/   Header, Footer, Backdrop, StarField (page chrome)
 components/forms/    client-side forms (NewsletterForm; provider comes from content/site.ts)
 components/sections/ one file per homepage section (Hero, About, Expertise, Work, Experience,
                      Writing, Offers, Testimonials, Contact)
-content/             site.ts = ALL copy and links; types.ts = their TypeScript types
-lib/                 small helpers: cn (class names), links (isPlainAnchor, newTabProps)
+components/work/     WorkCard (homepage + /work), CaseHeader, CaseFooter (case-study page)
+components/mdx/      MDX element map (components.tsx), MdxBody, Figure, Callout
+content/             site.ts = ALL site copy and links; types.ts = their TypeScript types;
+                     work/*.mdx = case studies (frontmatter + body, see "Case studies")
+lib/                 small helpers: cn (class names), links (isPlainAnchor, newTabProps),
+                     work (case-study reader, server-only), image-size, og-*, structured-data
+public/work/<slug>/  case-study images, referenced from MDX with <Figure src="/work/<slug>/x.png">
 public/              static files (photo.jpg, resume PDF)
 design/              design reference (not shipped)
 ```
@@ -91,8 +96,9 @@ Brand colour is changed in one place: `--accent`, `--accent-text`,
 1. **All colours come from tokens.** No hex, rgb() or Tailwind palette colours
    (`bg-blue-500`, `text-white`, `border-white/10`) in components. Need a new
    colour? Add a token first.
-2. **All copy lives in `content/`.** Components import from `content/site.ts`;
-   they do not contain headings, paragraphs, labels or URLs. Type new content
+2. **All copy lives in `content/`.** Components import from `content/site.ts` (or read
+   `content/work` through `lib/work.ts`); they do not contain headings, paragraphs,
+   labels or URLs. Arrows/back icons are lucide icons, never "←" / "→" in copy. Type new content
    in `content/types.ts`. Anything the owner still has to supply is marked
    `// TODO(chinmayi): ...` in `content/site.ts` (`grep -rn "TODO(chinmayi)" content`).
    Optional fields (`price`, `cta.href`, a post's `href`) hide their UI until set.
@@ -117,6 +123,45 @@ Brand colour is changed in one place: `--accent`, `--accent-text`,
 11. Keep Server Components by default; add `"use client"` only for state,
     effects or browser APIs.
 12. Before finishing a change: `npm run lint`, `npm run typecheck`, `npm run build`.
+
+## Case studies (content/work/*.mdx)
+
+Each file is `<slug>.mdx`: YAML frontmatter + MDX body. The MDX is the single source
+of truth: the homepage Work section, `/work`, `/work/[slug]`, the sitemap and the share
+images all read it. `site.ts` holds only the UI strings around it (`site.work`).
+
+- **Frontmatter** (all required; `lib/work.ts` validates it and **fails the build** with
+  the file and field): `title, slug (= file name), summary, category, role, timeline,
+  tools[], tags[], featured, order (unique), metrics[{value,label}] (>= 1), links[{label,href}]`
+  (may be `[]`). `featured: true` puts it on the homepage; `order` sorts everything and
+  drives "Next case study" (wraps round). The first metric is the card's outcome line.
+- **Pipeline:** `next-mdx-remote/rsc` (compiled at build in Server Components, no MDX
+  runtime in the browser; `blockJS` stays on) + `gray-matter` + `remark-gfm` (tables).
+  Elements are styled in `components/mdx/components.tsx`; tables sit in a focusable,
+  horizontally scrolling glass card. `{/* comments */}` render nothing, so TODOs can
+  live in the MDX (they are listed by `grep -rn "TODO(chinmayi)" content`).
+- **`<Figure src alt caption?>`** reads the file from `/public` at build time (and its
+  pixel size from the header, `lib/image-size.ts`, so there is no layout shift). Missing
+  file = renders nothing + a dev-only console warning. **`<Callout title>`** is a glass
+  card with an accent left edge.
+- **Case-study page** (`app/work/[slug]`): SSG via `generateStaticParams`
+  (`dynamicParams = false`), CreativeWork JSON-LD, per-page metadata. Metadata gotcha: a
+  page-level `openGraph` *replaces* the root one, including its image, so every page that
+  sets `openGraph` needs its own `opengraph-image` (see `app/work/opengraph-image.tsx`).
+- **Share images** (`app/work/[slug]/opengraph-image.tsx`, `lib/og-card.tsx`) are edge
+  runtime (next/og only works there on Windows), and edge has no `fs`. So
+  `next.config.mjs` reads each file's slug/title/category in Node at startup and inlines
+  them as `process.env.WORK_OG_CARDS` (`lib/work-cards.ts`). Restart `next dev` to see a
+  changed title on the image; the pages themselves hot-reload.
+- Adding a case study = drop `content/work/<slug>.mdx` (+ images in `public/work/<slug>/`).
+  No code change; it appears everywhere, including the sitemap.
+
+## Publications
+
+`site.experience.publications` (Experience section, anchor `#publications`, after
+Education). `draft: true` items never render and are left out of the Person JSON-LD
+(which is an `@graph` of the Person + one ScholarlyArticle per published paper). Display
+is `<venue> <year>`, so keep the year out of `venue`.
 
 ## Feature flag: newsletter
 
@@ -147,8 +192,8 @@ below-the-fold items after hydration and fades them in. Fully static under
   URL). Poppins is fetched in `lib/og-font.ts`.
 - `content/brand.ts` is a JS mirror of the brand colours for those images (they cannot
   read CSS variables). **Keep it in sync with `globals.css`** when the accent changes.
-- `app/sitemap.ts` builds from `publishedRoutes` in `content/site.ts`; add `/work/[slug]`
-  and `/writing` paths there when those routes exist.
+- `app/sitemap.ts` = `publishedRoutes` in `content/site.ts` + every case study from
+  `content/work` (automatic). Add `/writing` etc. to `publishedRoutes` when they exist.
 - JSON-LD Person is built in `lib/structured-data.ts` and rendered by `ui/JsonLd`.
 - Lighthouse (production build, simulated mobile): 95-98 / 100 / 100 / 100;
   desktop 99 / 100 / 100 / 100. Scores swing ±5 between runs; the first run after
@@ -172,3 +217,7 @@ below-the-fold items after hydration and fades them in. Fully static under
   device-pixel-ratios shift borders and rounding by up to 1px.
 - `public/Chinmayi-Rane-Resume.pdf` must be added by hand; until then the
   Resume links 404.
+- Headless Chrome (`--screenshot`) has a ~500px minimum window width, so 375px
+  captures come out cropped. Use the browser pane's emulation for mobile shots.
+- In Git Bash, a bare `/` argument is rewritten to a Windows path; prefix
+  `MSYS_NO_PATHCONV=1` when passing URL paths to scripts.

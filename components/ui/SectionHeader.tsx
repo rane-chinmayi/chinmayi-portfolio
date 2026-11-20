@@ -13,6 +13,8 @@ interface SectionHeaderProps {
   lead?: string;
   /** "large" is the closing call-to-action heading. */
   size?: "default" | "large";
+  /** Heading element: h2 on the homepage; h1 on a page where this is the title. */
+  as?: "h1" | "h2";
   className?: string;
 }
 
@@ -23,6 +25,7 @@ export default function SectionHeader({
   title,
   lead,
   size = "default",
+  as: Heading = "h2",
   className,
 }: SectionHeaderProps) {
   const lines = title.split("\n");
@@ -30,7 +33,7 @@ export default function SectionHeader({
   return (
     <div className={cn("text-center", className)} {...reveal()}>
       {eyebrow && <Eyebrow>{eyebrow}</Eyebrow>}
-      <h2
+      <Heading
         id={`${id}-title`}
         className={cn(
           "mb-3 mt-4 text-balance font-heading text-foreground",
@@ -48,7 +51,7 @@ export default function SectionHeader({
             {line}
           </Fragment>
         ))}
-      </h2>
+      </Heading>
       {lead && <Lead>{lead}</Lead>}
     </div>
   );

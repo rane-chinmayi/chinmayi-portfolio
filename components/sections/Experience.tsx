@@ -1,12 +1,17 @@
+import { ExternalLink } from "lucide-react";
 import Card from "@/components/ui/Card";
 import Section from "@/components/ui/Section";
 import SectionHeader from "@/components/ui/SectionHeader";
 import { cn } from "@/lib/cn";
+import { newTabProps } from "@/lib/links";
 import { reveal } from "@/lib/reveal";
 import { site } from "@/content/site";
 
 export default function Experience() {
-  const { roles, education, educationHeading } = site.experience;
+  const { roles, education, educationHeading, publicationsHeading, readPaperLabel } =
+    site.experience;
+  // Draft placeholders (`draft: true`) never render.
+  const publications = site.experience.publications.filter((paper) => !paper.draft);
 
   return (
     <Section id="experience" width="timeline">
@@ -61,6 +66,50 @@ export default function Experience() {
           </li>
         ))}
       </ul>
+
+      {publications.length > 0 && (
+        <section
+          id="publications"
+          aria-labelledby="publications-title"
+          className="mt-14"
+        >
+          <h3
+            id="publications-title"
+            className="mb-6 font-heading text-[22px] font-semibold text-foreground"
+            {...reveal()}
+          >
+            {publicationsHeading}
+          </h3>
+          <ul className="flex flex-col gap-4">
+            {publications.map((paper) => (
+              <li key={paper.href} {...reveal()}>
+                <Card className="p-6">
+                  <h4 className="font-heading text-[18px] font-semibold leading-snug text-foreground">
+                    {paper.title}
+                  </h4>
+                  <p className="mt-1.5 text-[14px] text-muted">
+                    {paper.venue} {paper.year}
+                  </p>
+                  <p className="mt-3 text-[15px] leading-[1.65] text-soft">
+                    {paper.takeaway}
+                  </p>
+                  <a
+                    href={paper.href}
+                    {...newTabProps}
+                    className="mt-4 inline-flex items-center gap-1.5 rounded-pill text-[14px] font-semibold text-accent-text underline-offset-4 transition-colors hover:underline active:opacity-80"
+                  >
+                    {readPaperLabel}
+                    <ExternalLink className="size-4" aria-hidden="true" />
+                    <span className="sr-only">
+                      : {paper.title} {site.labels.opensInNewTab}
+                    </span>
+                  </a>
+                </Card>
+              </li>
+            ))}
+          </ul>
+        </section>
+      )}
     </Section>
   );
 }

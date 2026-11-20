@@ -2,6 +2,7 @@ import { ImageResponse } from "next/og";
 import { brand } from "@/content/brand";
 import { site } from "@/content/site";
 import { loadPoppins } from "@/lib/og-font";
+import { ogBackdrop } from "@/lib/og-style";
 
 export const alt =
   "Chinmayi Rane. AI × Product, made simple. AI Product Manager, Mumbai to London.";
@@ -13,9 +14,6 @@ export const contentType = "image/png";
 /** Social share card (LinkedIn, X, etc.): 1200×630, brand style. */
 export default async function OpenGraphImage() {
   const fonts = await loadPoppins([500, 600, 700, 800]);
-  const grid = brand.gridLine;
-  const clear = "rgba(255, 255, 255, 0)"; // Satori has no `transparent` keyword in gradients
-
   return new ImageResponse(
     (
       <div
@@ -28,9 +26,7 @@ export default async function OpenGraphImage() {
           padding: "0 92px",
           fontFamily: "Poppins",
           color: brand.text,
-          backgroundColor: brand.bg,
-          backgroundImage: `radial-gradient(circle at 82% 18%, ${brand.accentGlow}, rgba(46, 91, 255, 0) 55%), linear-gradient(to bottom, ${grid} 0px, ${grid} 1px, ${clear} 1px), linear-gradient(to right, ${grid} 0px, ${grid} 1px, ${clear} 1px)`,
-          backgroundSize: "100% 100%, 64px 64px, 64px 64px",
+          ...ogBackdrop,
         }}
       >
         {/* Accent pill */}

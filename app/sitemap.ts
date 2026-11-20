@@ -1,17 +1,30 @@
 import type { MetadataRoute } from "next";
-import { site } from "@/content/site";
+import { caseStudyHref, site } from "@/content/site";
 import { siteUrl } from "@/lib/site-url";
+import { getAllWork } from "@/lib/work";
 
 /**
- * Lists `site.publishedRoutes`. To add pages (/work/[slug], /writing, ...),
- * add their paths to that array in content/site.ts once the pages exist.
+ * Static routes from `site.publishedRoutes` plus one entry per case study in
+ * content/work (added automatically). Add future pages (/writing, ...) to
+ * `publishedRoutes` in content/site.ts once they exist.
  */
 export default function sitemap(): MetadataRoute.Sitemap {
   const lastModified = new Date();
-  return site.publishedRoutes.map((path) => ({
-    url: path === "/" ? siteUrl : `${siteUrl}${path}`,
+  const url = (path: string) => (path === "/" ? siteUrl : `${siteUrl}${path}`);
+
+  const staticRoutes = site.publishedRoutes.map((path) => ({
+    url: url(path),
     lastModified,
-    changeFrequency: path === "/" ? "monthly" : "yearly",
-    priority: path === "/" ? 1 : 0.7,
+    changeFrequency: path === "/" ? ("monthly" as const) : ("yearly" as const),
+    priority: path === "/" ? 1 : 0.8,
   }));
+
+  const caseStudies = getAllWork().map((item) => ({
+    url: url(caseStudyHref(item.slug)),
+    lastModified,
+    changeFrequency: "yearly" as const,
+    priority: 0.7,
+  }));
+
+  return [...staticRoutes, ...caseStudies];
 }

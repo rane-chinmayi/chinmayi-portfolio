@@ -1,0 +1,47 @@
+---
+title: "YPC Workspace"
+slug: ypc-workspace
+summary: "A full-stack company management platform I built solo with Claude Code, now used daily by 30+ people for hiring, project tracking and internship management."
+category: "0→1 Platform · AI-assisted build"
+role: "Sole builder & PM, YPoint Combinator (MapIoT AI)"
+timeline: "2025 – Present"
+tools: ["Claude Code", "Role-based access control", "Database-level permissions"]
+tags: ["0→1", "Platform", "Metrics", "Problem-Driven Product Design"]
+featured: true
+order: 3
+metrics:
+  - value: "30+"
+    label: "daily active users"
+  - value: "5"
+    label: "user roles, secured at the database level"
+  - value: "Top 35%"
+    label: "intern cohort selected objectively"
+links: []
+---
+
+{/* TODO(chinmayi): add screenshots to /public/work/ypc-workspace/ and expand any section with more detail. */}
+
+## The problem
+
+YPC's internship programme ran on scattered tools and manual judgement. Bonus decisions were inconsistent, and as I dug in, it turned out hiring, project tracking and document management had the same issue: no shared visibility and no historical record.
+
+## What I built
+
+As sole builder and PM, I built YPC Workspace with Claude Code: one platform for hiring, project tracking and internship management, used by 30+ people every day.
+
+## Key decisions
+
+### Security belongs in the database, not the UI
+During manual testing I found a critical gap: permissions were enforced in the interface but not underneath it. I moved role-based permissions to the database level, which closed unauthorised access across all 5 user roles.
+
+### Replace gut calls with a transparent formula
+Intern bonuses were decided case by case. I designed a quantitative eligibility engine that ranks interns on a weighted mix of task completion rate, engagement and timeliness. Selecting the top-35% cohort became objective and auditable.
+
+### Expand scope when the problem is bigger than the brief
+The brief was internship management. Once I saw that hiring, projects and documents all lacked shared visibility, I expanded the product into a full company workspace rather than shipping another single-purpose tool.
+
+## Outcome
+
+- 30+ daily active users across hiring, projects and internships
+- Access control enforced at the database level across 5 roles
+- Bonus selection that anyone can audit

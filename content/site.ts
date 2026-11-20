@@ -96,9 +96,10 @@ export const site: SiteContent = {
     cta: "Back to home",
   },
 
-  // Paths listed in sitemap.xml. Add "/work/ypc-workspace", "/writing" etc.
-  // here once those pages exist; only list pages that actually render.
-  publishedRoutes: ["/"],
+  // Static paths listed in sitemap.xml; only list pages that actually render.
+  // /work/[slug] pages are added automatically from content/work (app/sitemap.ts).
+  // Add "/writing" etc. here once those pages exist.
+  publishedRoutes: ["/", "/work"],
 
   hero: {
     eyebrow: "AI × Product, made simple",
@@ -184,45 +185,28 @@ export const site: SiteContent = {
     ],
   },
 
+  // Case-study copy lives in content/work/*.mdx (frontmatter + body); read it
+  // through lib/work.ts. Only the UI strings around it are here.
   work: {
-    items: [
-      {
-        slug: "ypc-workspace",
-        chip: "0→1 Platform · Claude Code",
-        title: "YPC Workspace",
-        description:
-          "Sole builder and PM of a company management platform for hiring, projects and internships, with database-level permissions across 5 roles.",
-        outcome: "30+ daily active users",
-        glowPosition: "30% 40%",
-      },
-      {
-        slug: "msis",
-        chip: "AI Layer · MCP",
-        title: "MakerSpace Information Systems",
-        description:
-          "Led a team of 6 and specced an AI operating layer with natural-language querying for lab management and analytics.",
-        outcome: "Feedback cycles: weeks → 2 days",
-        glowPosition: "70% 30%",
-      },
-      {
-        slug: "elsa",
-        chip: "GTM · NSF I-Corps",
-        title: "Elsa, an elder-care robot",
-        description:
-          "Shaped B2B/B2C go-to-market and a dual-revenue pricing model, validated with an AI simulation layer.",
-        outcome: "100+ customer interviews",
-        glowPosition: "40% 70%",
-      },
-      {
-        slug: "nlp-analyst-research",
-        chip: "NLP · Research",
-        title: "Analyst experience, decoded",
-        description:
-          "A Python NLP pipeline (spaCy, YAKE) that replaced manual keyword extraction across financial-services Glassdoor reviews.",
-        outcome: "18,900+ records processed",
-        glowPosition: "75% 65%",
-      },
-    ],
+    // Glow position per card, cycled by order (the image area is decorative).
+    glowPositions: ["30% 40%", "70% 30%", "40% 70%", "75% 65%"],
+    viewAllLabel: "View all case studies",
+    ogFooter: "Case study",
+    index: {
+      eyebrow: "Work",
+      title: "Case Studies",
+      lead: "AI products, platforms and product analyses, with the decisions and numbers behind them.",
+    },
+    page: {
+      backLabel: "All work",
+      roleLabel: "Role",
+      timelineLabel: "Timeline",
+      toolsLabel: "Tools",
+      metricsLabel: "Key results",
+      nextLabel: "Next case study",
+      ctaTitle: "Want to talk about this work?",
+      tableLabel: "Table, scrolls sideways on small screens",
+    },
   },
 
   experience: {
@@ -274,6 +258,41 @@ export const site: SiteContent = {
         degree: "Electrical & Telecom Engineering",
         institution: "Sardar Patel Institute of Technology",
         gpa: "GPA 3.70",
+      },
+    ],
+    publicationsHeading: "Publications",
+    readPaperLabel: "Read paper",
+    // Items with `draft: true` are never rendered (or put in structured data).
+    publications: [
+      {
+        title: "Image Captioning based Smart Navigation System for Visually Impaired",
+        venue: "ICCICT",
+        year: "2021",
+        takeaway:
+          "Shaped how I think about AI reliability when users depend on the system for safety.",
+        href: "https://ieeexplore.ieee.org/document/9510102",
+        publisher: "IEEE",
+      },
+      {
+        title: "Data Driven Analysis for Startup Investments for Venture Capitalists",
+        venue: "ICONAT",
+        year: "2022",
+        takeaway:
+          "Taught me how investors structure evaluation frameworks, the logic behind the scoring systems I build.",
+        href: "https://ieeexplore.ieee.org/document/9725892",
+        publisher: "IEEE",
+      },
+      {
+        // TODO(chinmayi): add the third publication (title, venue, year, takeaway,
+        // IEEE link), then delete `draft: true`. Until then only two cards show;
+        // the "3 AI/ML publications" stats stay as they are.
+        title: "TODO(chinmayi): third publication title",
+        venue: "TODO venue",
+        year: "TODO",
+        takeaway: "TODO(chinmayi): one-line takeaway.",
+        href: "https://ieeexplore.ieee.org/",
+        publisher: "IEEE",
+        draft: true,
       },
     ],
   },
@@ -436,7 +455,7 @@ export const site: SiteContent = {
   },
 };
 
-/** URL of a case-study page. The pages themselves arrive in a later step. */
+/** URL of a case-study page (app/work/[slug]). */
 export function caseStudyHref(slug: string): string {
   return `/work/${slug}`;
 }

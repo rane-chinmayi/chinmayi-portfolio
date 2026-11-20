@@ -65,6 +65,11 @@ const config: Config = {
           "clamp(34px, 4vw, 48px)",
           { letterSpacing: "-0.02em", fontWeight: "700" },
         ],
+        // Case-study page title (h1).
+        "case-title": [
+          "clamp(34px, 5vw, 56px)",
+          { lineHeight: "1.1", letterSpacing: "-0.025em", fontWeight: "800" },
+        ],
       },
       letterSpacing: {
         eyebrow: "0.16em",

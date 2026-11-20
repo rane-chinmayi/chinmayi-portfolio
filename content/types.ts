@@ -68,16 +68,69 @@ export interface ExpertiseItem {
   chips: string[];
 }
 
-export interface CaseStudy {
-  /** URL segment: the card links to /work/[slug]. */
-  slug: string;
-  chip: string;
+/** One key result, shown as a stat card and (the first) as a card's outcome line. */
+export interface WorkMetric {
+  value: string;
+  label: string;
+}
+
+/** An outbound link on a case study (live demo, dashboard, sheet...). */
+export interface WorkLink {
+  label: string;
+  href: string;
+}
+
+/**
+ * Frontmatter of content/work/<slug>.mdx. Every field is required; lib/work.ts
+ * validates this at build time and fails with the file name and field.
+ */
+export interface WorkFrontmatter {
   title: string;
-  description: string;
-  /** Short result line shown with an arrow. */
-  outcome: string;
-  /** Centre of the accent glow in the card's image area, e.g. "30% 40%". */
-  glowPosition: string;
+  /** URL segment: /work/[slug]. Must match the file name. */
+  slug: string;
+  summary: string;
+  /** Chip text, e.g. "AI Product · RAG". */
+  category: string;
+  role: string;
+  timeline: string;
+  tools: string[];
+  tags: string[];
+  /** Shown in the homepage Work section. */
+  featured: boolean;
+  /** Sort order (ascending) on /work, the homepage and "Next case study". */
+  order: number;
+  /** At least one. The first is the card's outcome line. */
+  metrics: WorkMetric[];
+  /** May be empty (the links row is then hidden). */
+  links: WorkLink[];
+}
+
+/** A case study: validated frontmatter plus the raw MDX body. */
+export interface WorkItem extends WorkFrontmatter {
+  body: string;
+}
+
+export interface WorkContent {
+  /** Centre of the accent glow on each card's image area, cycled by position. */
+  glowPositions: string[];
+  /** Outline button under the homepage grid. */
+  viewAllLabel: string;
+  /** Text after the name on a case study's share image. */
+  ogFooter: string;
+  /** Heading block of the /work index page. */
+  index: Required<SectionIntro>;
+  /** Strings on the case-study page. */
+  page: {
+    backLabel: string;
+    roleLabel: string;
+    timelineLabel: string;
+    toolsLabel: string;
+    metricsLabel: string;
+    nextLabel: string;
+    ctaTitle: string;
+    /** Accessible name of a scrollable table in the article body. */
+    tableLabel: string;
+  };
 }
 
 export interface RoleItem {
@@ -99,11 +152,30 @@ export interface EducationItem {
   gpa: string;
 }
 
+export interface PublicationItem {
+  title: string;
+  /** Conference or journal name, e.g. "ICCICT". Shown as "<venue> <year>". */
+  venue: string;
+  year: string;
+  /** One line on what the paper taught or shaped. */
+  takeaway: string;
+  /** Link to the paper (opens in a new tab). */
+  href: string;
+  /** Publisher for structured data, e.g. "IEEE". */
+  publisher?: string;
+  /** Placeholder not filled in yet: never rendered, never in structured data. */
+  draft?: boolean;
+}
+
 export interface ExperienceContent {
   roles: RoleItem[];
   /** Visually hidden heading for the education cards. */
   educationHeading: string;
   education: EducationItem[];
+  /** Visible h3 above the publication cards (anchor: #publications). */
+  publicationsHeading: string;
+  readPaperLabel: string;
+  publications: PublicationItem[];
 }
 
 export type PostType = "Carousel" | "Newsletter";
@@ -230,12 +302,12 @@ export interface SiteContent {
   features: FeatureFlags;
   seo: SeoContent;
   notFound: NotFoundContent;
-  /** Paths listed in sitemap.xml. Add /work/[slug] etc. once those pages exist. */
+  /** Static paths listed in sitemap.xml. Case-study pages are added from content/work. */
   publishedRoutes: string[];
   hero: HeroContent;
   about: AboutContent;
   expertise: { items: ExpertiseItem[] };
-  work: { items: CaseStudy[] };
+  work: WorkContent;
   experience: ExperienceContent;
   writing: WritingContent;
   offers: { items: OfferItem[] };

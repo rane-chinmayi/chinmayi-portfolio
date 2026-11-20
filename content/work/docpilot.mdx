@@ -1,0 +1,101 @@
+---
+title: "DocPilot: From Zero to Shipped"
+slug: docpilot
+summary: "An AI assistant that answers analytics-tool questions from official docs, with sources and a confidence score. Evaluated on 50 questions: 84% faster than manual search, and every high-confidence answer was correct."
+category: "AI Product · RAG"
+role: "Solo builder & PM"
+timeline: "2026"
+tools: ["Gemini", "FAISS", "FastAPI", "React", "Vercel"]
+tags: ["RAG", "LLMs", "Prompt Engineering", "AI Product Strategy", "Metrics"]
+featured: true
+order: 1
+metrics:
+  - value: "84%"
+    label: "less time than manual doc search"
+  - value: "100%"
+    label: "accuracy on high-confidence answers"
+  - value: "4.3s"
+    label: "average response time"
+  - value: "145+"
+    label: "doc chunks across 3 tools"
+links:
+  - label: "Try DocPilot"
+    href: "https://docpilot-analytics.vercel.app/"
+  - label: "Full evaluation sheet"
+    href: "https://docs.google.com/spreadsheets/d/1JeSTGa-tOZ6m7N4lXh14h0MY4l8JMekg/edit?usp=sharing&ouid=109161677843570711070&rtpof=true&sd=true"
+---
+
+<Figure src="/work/docpilot/hero.png" alt="DocPilot chat interface answering an analytics question with a source link and confidence badge" />
+
+## The problem
+
+Every PM and analyst who uses Amplitude knows this moment. You're mid-analysis, you need to set up a funnel or a retention chart, and you can't remember the exact steps. You open the docs, skim three pages, and 20 minutes later you're back where you started.
+
+It isn't an Amplitude problem. It happens with Mixpanel, Google Analytics and every other analytics tool. The documentation exists; finding the right answer quickly doesn't. I didn't want to write better docs. I wanted to build something that reads them for you.
+
+## What I built
+
+DocPilot answers questions about analytics tools in plain English, using the official documentation as its knowledge base. It retrieves the most relevant sections, generates a precise answer, and links back to the source.
+
+The core is **RAG (Retrieval Augmented Generation)**. Instead of relying on a model's training data, which goes stale and hallucinates, every answer is grounded in retrieved documentation chunks and traces back to a real source.
+
+- **Coverage:** Amplitude, Mixpanel and Google Analytics, 145+ chunks, one search index per tool
+- **Experience:** multi-turn chat, a confidence score on every answer, related-question suggestions, source links and response-time tracking
+- **Reliability:** a model fallback chain to handle free-tier API rate limits gracefully
+
+<Figure src="/work/docpilot/interface.png" alt="DocPilot answer view with related questions and source links" />
+
+## Key product decisions
+
+### RAG over fine-tuning
+Documentation changes, and fine-tuned models go stale. RAG lets me update the knowledge base without retraining anything. And source attribution matters for trust: if an answer is wrong, the user can see where it came from and verify it. RAG makes every answer auditable.
+
+### Three tools, not one
+My first instinct was to ship Amplitude only. But most PMs and analysts don't use one tool; they switch depending on the company. A multi-tool copilot reflects how analytics work actually happens. Separate indexes per tool prevent answers from bleeding across tools.
+
+<Figure src="/work/docpilot/tools.png" alt="DocPilot tool selector for Amplitude, Mixpanel and Google Analytics" />
+
+### Surface confidence instead of hiding it
+Early testing showed some answers were better grounded than others. Rather than hide that, I surfaced it: a "Low Confidence" badge tells users to verify. The evaluation proved this was the right call.
+
+### A structured evaluation over thin user feedback
+I couldn't get enough real users to produce statistically meaningful usage data, and I'd rather say that than inflate numbers. So I designed a reproducible evaluation: 50 questions across three tools, each checked against official docs, with DocPilot's response time compared to manual search time.
+
+### What I deliberately didn't build
+I considered adding Heap and Looker and chose not to. Adding tools before validating the first three would be feature accumulation, not product thinking. New coverage should follow demand.
+
+## The results
+
+50 questions: 20 Amplitude, 15 Mixpanel, 15 Google Analytics.
+
+| Metric | Result |
+| --- | --- |
+| Overall accuracy | **74%** (80% including partially correct) |
+| Average response time | 4.3 seconds |
+| Average manual search time | ~27 seconds |
+| Time saved vs manual search | **~84%** |
+
+| Tool | Accuracy |
+| --- | --- |
+| Mixpanel | 87% |
+| Amplitude | 75% |
+| Google Analytics | 60% |
+
+<Callout title="The standout finding: confidence calibration">
+High-confidence answers were correct **100%** of the time, medium 67%, low 33%. The confidence score isn't decorative. It's a signal users can act on.
+</Callout>
+
+<Figure src="/work/docpilot/evaluation.png" alt="Charts of DocPilot accuracy by tool and by confidence level" />
+
+### What the failures taught me
+- **Google Analytics was weakest because of the docs, not the model.** The questions DocPilot missed (date comparisons, internal traffic filters, GA4 goal setup) were also hard to find manually. That's a content problem with a clear fix.
+- **Some "wrong" answers still beat manual search.** On a few Amplitude questions I gave up searching manually, while DocPilot still pointed in a usable direction.
+- **Terminology mismatches are the most fixable gap.** "N-Day retention" is called "N-Day LTV" in the docs, and "conversion window" lives in a screenshot caption. Both are chunking and query-expansion problems.
+
+## What's next
+
+1. **Expand Google Analytics coverage first**, guided by the exact categories that failed.
+2. **Fix terminology mismatches** with synonym tagging or a query-expansion step before retrieval.
+3. **Re-run the 50-question evaluation after every fix**, keeping the original as a baseline, so improvement is shown, not claimed.
+4. **v3: a Chrome extension.** A chat bubble inside Amplitude, Mixpanel or GA, so users never leave the tool. The `/ask` API already exists; the hard part is the product work of making it feel native.
+5. **A Slack integration**, and more tools (Heap, Looker, Tableau) once usage shows demand.

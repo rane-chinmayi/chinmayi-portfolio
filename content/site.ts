@@ -415,7 +415,12 @@ export const site: SiteContent = {
     emailLabel: "Email Me",
     linkedinLabel: "LinkedIn",
     resumeLabel: "Download Resume",
-    chips: ["Mumbai → London", "Open to hybrid or on-site", "Available for advisory"],
+    location: { prefix: "Currently based in", place: "Mumbai, India" },
+    chips: [
+      { icon: "globe", label: "Available worldwide" },
+      { icon: "briefcase", label: "Remote · Hybrid · On-site" },
+      { icon: "plane", label: "Open to relocation" },
+    ],
   },
 
   // Section headings, taken from design/design-reference.html.
@@ -449,8 +454,8 @@ export const site: SiteContent = {
     testimonials: { eyebrow: "Testimonials", title: "Kind Words" },
     contact: {
       // "\n" marks the desktop line break (see SectionHeader).
-      title: "Let's Make Something\nSimple Together",
-      lead: "Hiring an AI PM, looking for a collaborator, or want help shipping your first AI feature? I'd love to hear from you.",
+      title: "Let's Build Better Products\nTogether",
+      lead: "Whether you're hiring a Product Manager, looking for product advisory, or seeking Product Management mentorship, I'd love to hear about your goals and explore how we can work together.",
     },
   },
 };

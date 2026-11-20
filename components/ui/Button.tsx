@@ -8,7 +8,7 @@ import { cn } from "@/lib/cn";
 import { isPlainAnchor, newTabProps } from "@/lib/links";
 
 type Variant = "primary" | "secondary" | "outline";
-type Size = "lg" | "md" | "sm" | "field" | "block";
+type Size = "xl" | "lg" | "md" | "sm" | "field" | "block";
 
 interface CommonProps {
   variant?: Variant;
@@ -48,6 +48,7 @@ const variants: Record<Variant, string> = {
 // Padding includes the 1px border, so primary and secondary are the same size.
 // Each size mirrors a button in the reference (outer padding in comments).
 const sizes: Record<Size, string> = {
+  xl: "min-h-[52px] px-7 py-3.5 text-[16px]", // contact CTAs: 52px tall
   lg: "px-[27px] py-3.5 text-[16px]", // 15/28: hero CTAs
   md: "px-[25px] py-[13px] text-[16px]", // 14/26: contact CTAs
   sm: "px-[19px] py-[9px] text-[14px]", // 10/20: nav, offer links

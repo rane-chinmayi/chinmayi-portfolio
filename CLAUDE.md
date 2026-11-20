@@ -115,8 +115,9 @@ Brand colour is changed in one place: `--accent`, `--accent-text`,
    from any route. Files (PDF) and external URLs use `<a>`; `ui/Button` picks
    the right one automatically.
 9. **Use the shared UI**: `Section` + `SectionHeader` for sections, `Card`
-   (also a link via `href`), `Chip` (tones: default/muted/accent/overlay), `Eyebrow`,
-   `Button` (variants primary/secondary/outline; sizes lg/md/sm/field/block; link or
+   (also a link via `href`), `Chip` (tones: default/muted/accent/overlay; sizes sm 13px /
+   md 14px), `Eyebrow`,
+   `Button` (variants primary/secondary/outline; sizes xl (52px, contact)/lg/md/sm/field/block; link or
    button). Do not re-style these ad hoc. External and file links are detected
    automatically (`lib/links.ts`); pass `newTab` for a new tab.
 10. **No new dependencies without a reason**, and state the reason in the commit.

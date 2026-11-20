@@ -37,7 +37,7 @@ export default function SectionHeader({
         id={`${id}-title`}
         className={cn(
           "mb-3 mt-4 text-balance font-heading text-foreground",
-          size === "large" ? "text-h2-xl" : "text-h2",
+          size === "large" ? "text-h2-xl leading-[1.25]" : "text-h2",
         )}
       >
         {lines.map((line, index) => (

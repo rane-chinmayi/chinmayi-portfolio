@@ -236,11 +236,15 @@ export interface TestimonialItem {
   initials: string;
 }
 
+export type ContactChipIcon = "globe" | "briefcase" | "plane";
+
 export interface ContactContent {
   emailLabel: string;
   linkedinLabel: string;
   resumeLabel: string;
-  chips: string[];
+  /** "<prefix> <place>": the place is shown bold. */
+  location: { prefix: string; place: string };
+  chips: Array<{ icon: ContactChipIcon; label: string }>;
 }
 
 export interface FeatureFlags {

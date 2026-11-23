@@ -40,6 +40,7 @@ const config: Config = {
         },
         accent: {
           DEFAULT: "rgb(var(--accent) / <alpha-value>)",
+          2: "rgb(var(--accent-2) / <alpha-value>)",
           text: "rgb(var(--accent-text) / <alpha-value>)",
         },
         "on-accent": "rgb(var(--on-accent) / <alpha-value>)",
@@ -102,11 +103,16 @@ const config: Config = {
       },
       boxShadow: {
         glow: "0 8px 32px var(--accent-glow)",
+        // Primary button on hover: a little wider and deeper.
+        "glow-strong": "0 10px 40px var(--accent-glow), 0 4px 14px var(--accent-glow)",
         elevated: "0 12px 40px rgba(0, 0, 0, 0.45)",
         // 4px ring in the page colour: separates timeline dots from the line.
         dot: "0 0 0 4px rgb(var(--bg))",
       },
       backgroundImage: {
+        // Primary buttons and other accent fills with text on them.
+        "accent-gradient":
+          "linear-gradient(90deg, rgb(var(--accent)), rgb(var(--accent-2)))",
         "band-glow":
           "radial-gradient(ellipse at 0% 0%, var(--accent-glow), transparent 60%)",
         "page-glow":

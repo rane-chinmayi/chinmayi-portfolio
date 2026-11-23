@@ -51,7 +51,7 @@ export default function CaseFooter({ next }: { next?: WorkItem }) {
             {page.ctaTitle}
           </h2>
           <div className="mt-6 flex flex-wrap justify-center gap-3">
-            <Button href={links.emailHref} size="md" glow={false}>
+            <Button href={links.emailHref} size="md">
               {contact.emailLabel}
             </Button>
             <Button href={links.linkedin} newTab variant="outline" size="md">

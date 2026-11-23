@@ -13,7 +13,7 @@ type Size = "xl" | "lg" | "md" | "sm" | "field" | "block";
 interface CommonProps {
   variant?: Variant;
   size?: Size;
-  /** Resting glow under a primary button. On by default; off for nav/forms. */
+  /** Resting glow under a primary button (stronger on hover). On for every primary; pass false to opt out. */
   glow?: boolean;
   className?: string;
   children: ReactNode;
@@ -36,7 +36,7 @@ const base =
 
 const variants: Record<Variant, string> = {
   primary:
-    "border-transparent bg-accent text-on-accent hover:brightness-110 active:brightness-95",
+    "border-transparent bg-accent-gradient text-on-accent hover:brightness-110 active:brightness-95",
   // Hero secondary: outline with a faint fill.
   secondary:
     "border-border-strong bg-fill-subtle text-foreground hover:bg-fill-chip active:bg-fill-soft",
@@ -72,7 +72,7 @@ export default function Button(props: ButtonProps) {
     const classes = cn(
       base,
       variants[variant],
-      variant === "primary" && glow && "shadow-glow",
+      variant === "primary" && glow && "shadow-glow hover:shadow-glow-strong",
       sizes[size],
       className,
     );
@@ -106,7 +106,7 @@ export default function Button(props: ButtonProps) {
       className={cn(
         base,
         variants[variant],
-        variant === "primary" && glow && "shadow-glow",
+        variant === "primary" && glow && "shadow-glow hover:shadow-glow-strong",
         sizes[size],
         className,
       )}

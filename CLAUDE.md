@@ -68,10 +68,12 @@ translucent tokens carry their own alpha (use as-is).
 | text-muted | #B6BAC8 | `text-muted` |
 | text-subtle | #8A8EA0 | `text-subtle` |
 | chip-text | #E4DEFF | `text-chip` |
-| accent (fills, buttons) | #2E5BFF | `bg-accent` |
-| accent-text (accent text on dark) | #8FA8FF | `text-accent-text` |
-| accent-glow | rgba(46,91,255,0.28) | `shadow-glow`, `bg-page-glow` |
-| on-accent | #FFFFFF | `text-on-accent` |
+| accent (solid fills: dots, avatar; gradient start) | #8B5CF6 | `bg-accent` |
+| accent-2 (gradient end) | #A855F7 | `bg-accent-2` |
+| accent gradient (primary buttons, icons, share pills) | 90deg, accent → accent-2 | `bg-accent-gradient` |
+| accent-text (accent text on dark) | #A78BFA | `text-accent-text` |
+| accent-glow | rgba(139,92,246,0.35) | `shadow-glow`, `shadow-glow-strong` (button hover), `bg-page-glow`, `bg-band-glow` |
+| on-accent (text/icons ON accent fills) | #110A19 (dark, not white) | `text-on-accent` |
 
 Radii: card 20px `rounded-card`, inner 14px `rounded-inner`, pill 999px
 `rounded-pill`. Container: `<Container>` / `max-w-container`. Its *content* is
@@ -88,8 +90,10 @@ which add Tailwind's own line-heights. The reference's stated "44px tile /
 40px icon / 180px image" are content-box, so they render at 46 / 42 / 220px;
 we match what renders.
 
-Brand colour is changed in one place: `--accent`, `--accent-text`,
-`--accent-glow` in `globals.css` (a violet alternative is in the comment there).
+Brand colour is changed in one place: `--accent`, `--accent-2`, `--accent-text`,
+`--accent-glow`, `--on-accent` in `globals.css` (the previous blue theme is in the comment
+there), plus the mirror in `content/brand.ts` for generated images. The tokens hold RGB
+triplets (so `bg-accent/20` works); hex values are in the comments.
 
 ## Rules
 
@@ -107,7 +111,8 @@ Brand colour is changed in one place: `--accent`, `--accent-text`,
 4. **Semantic HTML.** One `<h1>`; sections are `<section aria-labelledby>`;
    lists are `<ul>`; label every `<nav>`; header and footer are outside `<main>`.
 5. **Contrast >= 4.5:1** for text. Use `text-accent-text` (not `text-accent`)
-   for accent-coloured text on dark. White on `bg-accent` is 5.2:1.
+   for accent-coloured text on dark (7.4:1 on the page bg). Text on accent fills is
+   `text-on-accent` (#110A19): 4.59:1 on #8B5CF6, 4.91:1 on #A855F7; never white.
 6. **Respect `prefers-reduced-motion`.** Every animation or transition needs a
    reduced-motion fallback (`motion-reduce:` utilities or a media query).
 7. **Icons: lucide-react only. No emoji or text glyphs (✓ ✦ ☰) as icons, except the

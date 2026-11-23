@@ -97,7 +97,7 @@ export default function Header() {
                 ))}
               </ul>
             </nav>
-            <Button href={site.links.resume} newTab size="sm" glow={false}>
+            <Button href={site.links.resume} newTab size="sm">
               {site.labels.resume}
             </Button>
           </div>
@@ -145,7 +145,7 @@ export default function Header() {
           <Button
             href={site.links.resume}
             newTab
-            glow={false}
+           
             onClick={closeMenu}
             className="mt-3 w-full"
           >

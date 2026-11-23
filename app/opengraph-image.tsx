@@ -38,11 +38,10 @@ export default async function OpenGraphImage() {
             gap: 12,
             padding: "11px 24px",
             borderRadius: 999,
-            border: `1.5px solid ${brand.accentBorder}`,
-            backgroundColor: brand.accentTint,
-            color: brand.accentText,
+            backgroundImage: brand.accentGradient,
+            color: brand.onAccent,
             fontSize: 24,
-            fontWeight: 600,
+            fontWeight: 700,
           }}
         >
           <div
@@ -50,7 +49,7 @@ export default async function OpenGraphImage() {
               width: 10,
               height: 10,
               borderRadius: 999,
-              backgroundColor: brand.accentText,
+              backgroundColor: brand.onAccent,
             }}
           />
           {site.hero.chips[0]}

@@ -20,7 +20,7 @@ export default async function AppleIcon() {
           display: "flex",
           alignItems: "center",
           justifyContent: "center",
-          backgroundColor: brand.accent,
+          backgroundImage: brand.accentGradientDiagonal,
           color: brand.onAccent,
           fontFamily: "Poppins",
           fontSize: 128,

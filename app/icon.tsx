@@ -7,7 +7,7 @@ export const runtime = "edge";
 export const size = { width: 32, height: 32 };
 export const contentType = "image/png";
 
-/** Favicon: accent rounded square with a white Poppins "C". */
+/** Favicon: accent-gradient rounded square with a dark (on-accent) Poppins "C". */
 export default async function Icon() {
   const fonts = await loadPoppins([700]);
 
@@ -21,7 +21,7 @@ export default async function Icon() {
           alignItems: "center",
           justifyContent: "center",
           borderRadius: 8,
-          backgroundColor: brand.accent,
+          backgroundImage: brand.accentGradientDiagonal,
           color: brand.onAccent,
           fontFamily: "Poppins",
           fontSize: 23,

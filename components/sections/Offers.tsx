@@ -45,7 +45,7 @@ export default function Offers() {
                       <Button
                         href={href}
                         size="block"
-                        glow={false}
+                       
                         className="w-full"
                       >
                         {offer.cta.label}

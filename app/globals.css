@@ -13,13 +13,16 @@
  *  - Translucent colours (surface, borders, fills, glow) are complete rgba()
  *    values with their alpha baked in. Use them as-is, with no `/xx` modifier.
  *
- * BRAND COLOUR: change --accent, --accent-text and --accent-glow together.
- * Everything accent-derived (buttons, glow shadow, page glow, links) reads
- * from these three.
- *   Violet alternative:
- *     --accent:      124 58 237;            #7C3AED
- *     --accent-text: 167 139 250;           #A78BFA
- *     --accent-glow: rgba(124, 58, 237, 0.28);
+ * BRAND COLOUR (violet gradient): change --accent, --accent-2, --accent-text,
+ * --accent-glow and --on-accent together. Everything accent-derived (the
+ * gradient primary button, glow shadows, page glow, links) reads from these,
+ * and content/brand.ts mirrors them for generated images.
+ *   Blue alternative (the previous theme; --on-accent was white):
+ *     --accent:      46 91 255;             #2E5BFF
+ *     --accent-2:    46 91 255;             (solid: same as --accent)
+ *     --accent-text: 143 168 255;           #8FA8FF
+ *     --accent-glow: rgba(46, 91, 255, 0.28);
+ *     --on-accent:   255 255 255;           #FFFFFF
  */
 :root {
   /* Surfaces */
@@ -49,10 +52,11 @@
   --text-soft: 226 228 236; /* #E2E4EC  testimonial quote */
 
   /* Accent (brand) */
-  --accent: 46 91 255; /* #2E5BFF  fills, buttons */
-  --accent-text: 143 168 255; /* #8FA8FF  accent text on dark */
-  --accent-glow: rgba(46, 91, 255, 0.28);
-  --on-accent: 255 255 255; /* text on accent fills */
+  --accent: 139 92 246; /* #8B5CF6  solid fills (dots, avatar), gradient start */
+  --accent-2: 168 85 247; /* #A855F7  gradient end */
+  --accent-text: 167 139 250; /* #A78BFA  accent text on dark */
+  --accent-glow: rgba(139, 92, 246, 0.35);
+  --on-accent: 17 10 25; /* #110A19  text/icons ON accent fills (4.6:1+ on both) */
   --error: 252 165 165; /* #FCA5A5  form errors (8:1 on --bg) */
 
   /* Shape and layout */

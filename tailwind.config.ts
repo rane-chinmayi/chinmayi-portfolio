@@ -48,6 +48,17 @@ const config: Config = {
       fontFamily: {
         sans: ["var(--font-inter)", "system-ui", "sans-serif"],
         heading: ["var(--font-poppins)", "system-ui", "sans-serif"],
+        // Emoji only (ui/Emoji). The Noto subsets (app/emoji-font.ts) first, then
+        // the system emoji fonts as the fallback.
+        emoji: [
+          "var(--font-emoji-a)",
+          "var(--font-emoji-b)",
+          "var(--font-emoji-c)",
+          "Apple Color Emoji",
+          "Segoe UI Emoji",
+          "Noto Color Emoji",
+          "sans-serif",
+        ],
       },
       // No line-height here on purpose: it inherits `normal` from <body>,
       // matching the reference.

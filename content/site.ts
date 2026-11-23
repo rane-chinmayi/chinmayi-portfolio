@@ -412,14 +412,19 @@ export const site: SiteContent = {
   },
 
   contact: {
+    // Icons here are emoji by design (the only place on the site that uses them).
+    // They are decorative: shown with aria-hidden, rendered in Noto Color Emoji.
     emailLabel: "Email Me",
+    emailIcon: "✉️",
     linkedinLabel: "LinkedIn",
+    linkedinIcon: "🔗",
     resumeLabel: "Download Resume",
-    location: { prefix: "Currently based in", place: "Mumbai, India" },
+    resumeIcon: "📄",
+    location: { icon: "📍", prefix: "Currently based in", place: "Mumbai, India" },
     chips: [
-      { icon: "globe", label: "Available worldwide" },
-      { icon: "briefcase", label: "Remote · Hybrid · On-site" },
-      { icon: "plane", label: "Open to relocation" },
+      { icon: "🌍", label: "Available worldwide" },
+      { icon: "💼", label: "Remote · Hybrid · On-site" },
+      { icon: "✈️", label: "Open to relocation" },
     ],
   },
 

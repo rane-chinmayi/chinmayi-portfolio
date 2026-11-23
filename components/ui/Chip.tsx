@@ -23,9 +23,10 @@ const tones: Record<Tone, string> = {
   overlay: "bg-background/70 text-chip",
 };
 
+// gap = space between an icon and the label (6px, or 8px for md).
 const sizes: Record<Size, string> = {
-  sm: "px-3 py-1.5 text-[13px]",
-  md: "px-4 py-2 text-[14px]",
+  sm: "gap-1.5 px-3 py-1.5 text-[13px]",
+  md: "gap-2 px-4 py-2 text-[14px]",
 };
 
 /** Small pill label (13px, or 14px with size="md"). */
@@ -38,7 +39,7 @@ export default function Chip({
   return (
     <span
       className={cn(
-        "inline-flex items-center gap-1.5 rounded-pill border border-border-chip font-medium",
+        "inline-flex items-center rounded-pill border border-border-chip font-medium",
         sizes[size],
         tones[tone],
         className,

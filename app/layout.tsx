@@ -6,6 +6,7 @@ import Header from "@/components/layout/Header";
 import RevealObserver from "@/components/ui/RevealObserver";
 import { site } from "@/content/site";
 import { siteUrl } from "@/lib/site-url";
+import { emojiFontVariables } from "./emoji-font";
 import "./globals.css";
 
 // Inter is a variable font: one file covers every weight (400-700 are used).
@@ -64,7 +65,7 @@ export default function RootLayout({
   children: React.ReactNode;
 }>) {
   return (
-    <html lang="en" className={`${inter.variable} ${poppins.variable}`}>
+    <html lang="en" className={`${inter.variable} ${poppins.variable} ${emojiFontVariables}`}>
       <body className="font-sans antialiased">
         <a
           href="#main"

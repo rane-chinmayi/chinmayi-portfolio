@@ -236,15 +236,17 @@ export interface TestimonialItem {
   initials: string;
 }
 
-export type ContactChipIcon = "globe" | "briefcase" | "plane";
-
+/** Contact copy. Icons are emoji strings (decorative, aria-hidden when rendered). */
 export interface ContactContent {
   emailLabel: string;
+  emailIcon: string;
   linkedinLabel: string;
+  linkedinIcon: string;
   resumeLabel: string;
-  /** "<prefix> <place>": the place is shown bold. */
-  location: { prefix: string; place: string };
-  chips: Array<{ icon: ContactChipIcon; label: string }>;
+  resumeIcon: string;
+  /** "<icon> <prefix> <place>": the place is shown bold. */
+  location: { icon: string; prefix: string; place: string };
+  chips: Array<{ icon: string; label: string }>;
 }
 
 export interface FeatureFlags {

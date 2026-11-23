@@ -110,7 +110,15 @@ Brand colour is changed in one place: `--accent`, `--accent-text`,
    for accent-coloured text on dark. White on `bg-accent` is 5.2:1.
 6. **Respect `prefers-reduced-motion`.** Every animation or transition needs a
    reduced-motion fallback (`motion-reduce:` utilities or a media query).
-7. **Icons: lucide-react only. No emoji or text glyphs (✓ ✦ ☰) as icons.**
+7. **Icons: lucide-react only. No emoji or text glyphs (✓ ✦ ☰) as icons, except the
+   Contact section, which uses emoji by design.** Those live in `content/site.ts`
+   (`contact.*Icon`, `chips[].icon`), render through `ui/Emoji` (`aria-hidden`, tailwind
+   `font-emoji`). They are set in a ~7 KB **subset** of Noto Color Emoji loaded with
+   `next/font/local` (`app/emoji-font.ts`, files + how to regenerate in `app/fonts/README.md`),
+   not `next/font/google`: that has no glyph subsetting and would ship ~1.2 MB of
+   unicode-range chunks (mobile Lighthouse fell from ~98 to ~56). A new emoji needs adding
+   to the subset, otherwise it falls back to the system emoji font. Safari/iOS cannot use
+   this colour-vector font and show Apple's emoji.
 8. **Internal links use `next/link`.** Navigation hrefs are `/#id` so they work
    from any route. Files (PDF) and external URLs use `<a>`; `ui/Button` picks
    the right one automatically.

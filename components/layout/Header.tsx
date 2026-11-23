@@ -62,9 +62,9 @@ export default function Header() {
   return (
     <header
       ref={headerRef}
-      className="fixed inset-x-0 top-0 z-50 px-4 pt-5 sm:px-6"
+      className="fixed inset-x-0 top-0 z-50 px-4 pt-5"
     >
-      <div className="relative mx-auto max-w-content">
+      <div className="relative mx-auto max-w-[var(--nav-max)]">
         <div
           className={cn(
             "flex items-center justify-between rounded-pill border bg-surface-solid/[0.78] py-3.5 pl-6 pr-3 backdrop-blur-md transition-[border-color,box-shadow] duration-300 lg:pl-7 lg:pr-[18px]",

@@ -56,7 +56,7 @@ export default function CaseStudyPage({ params }: PageProps) {
   return (
     <article aria-labelledby="case-title">
       <JsonLd data={caseStudyJsonLd(item)} />
-      <Container width="narrow" className="pb-20 pt-32 md:pb-[120px] md:pt-40">
+      <Container className="pb-20 pt-32 md:pb-[120px] md:pt-40">
         <CaseHeader item={item} />
         <div className="mt-14 md:mt-16">
           <MdxBody source={item.body} />

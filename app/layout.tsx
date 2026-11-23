@@ -69,7 +69,7 @@ export default function RootLayout({
       <body className="font-sans antialiased">
         <a
           href="#main"
-          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-pill focus:bg-accent-gradient focus:px-5 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-on-accent"
+          className="sr-only focus:not-sr-only focus:fixed focus:left-4 focus:top-4 focus:z-[60] focus:rounded-pill focus:bg-accent focus:bg-accent-gradient focus:px-5 focus:py-2.5 focus:text-sm focus:font-semibold focus:text-on-accent"
         >
           {site.labels.skipToContent}
         </a>

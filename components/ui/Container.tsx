@@ -4,7 +4,7 @@ import { cn } from "@/lib/cn";
 export type ContainerWidth = "default" | "timeline" | "narrow";
 
 const widths: Record<ContainerWidth, string> = {
-  default: "max-w-container", // content 1200px
+  default: "max-w-container", // content 1072px (1120px with the 24px gutters)
   timeline: "max-w-timeline", // content 960px
   narrow: "max-w-narrow", // content 900px
 };

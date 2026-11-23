@@ -95,24 +95,18 @@ const config: Config = {
         // `container` = content width + the 2×24px gutters (Container is border-box),
         // so content is exactly --container-max wide, as in the reference.
         container: "calc(var(--container-max) + 3rem)",
-        // `content` = the bare content width (header pill).
-        content: "var(--container-max)",
         // Narrower page widths, same content-width + gutters convention.
         timeline: "calc(var(--container-timeline) + 3rem)",
         narrow: "calc(var(--container-narrow) + 3rem)",
       },
       boxShadow: {
-        glow: "0 8px 32px var(--accent-glow)",
-        // Primary button on hover: a little wider and deeper.
-        "glow-strong": "0 10px 40px var(--accent-glow), 0 4px 14px var(--accent-glow)",
+        // Resting button glow (the hover glow, `glow-hover`, is in globals.css).
+        glow: "var(--accent-shadow)",
         elevated: "0 12px 40px rgba(0, 0, 0, 0.45)",
         // 4px ring in the page colour: separates timeline dots from the line.
         dot: "0 0 0 4px rgb(var(--bg))",
       },
       backgroundImage: {
-        // Primary buttons and other accent fills with text on them.
-        "accent-gradient":
-          "linear-gradient(90deg, rgb(var(--accent)), rgb(var(--accent-2)))",
         "band-glow":
           "radial-gradient(ellipse at 0% 0%, var(--accent-glow), transparent 60%)",
         "page-glow":

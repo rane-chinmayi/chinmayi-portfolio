@@ -70,17 +70,21 @@ translucent tokens carry their own alpha (use as-is).
 | chip-text | #E4DEFF | `text-chip` |
 | accent (solid fills: dots, avatar; gradient start) | #8B5CF6 | `bg-accent` |
 | accent-2 (gradient end) | #A855F7 | `bg-accent-2` |
-| accent gradient (primary buttons, icons, share pills) | 90deg, accent → accent-2 | `bg-accent-gradient` |
+| accent gradient (primary buttons, icons, share pills) | 90deg, accent → accent-2 | `bg-accent-gradient` (use with `bg-accent` as the solid fallback) |
 | accent-text (accent text on dark) | #A78BFA | `text-accent-text` |
-| accent-glow | rgba(139,92,246,0.35) | `shadow-glow`, `shadow-glow-strong` (button hover), `bg-page-glow`, `bg-band-glow` |
+| accent-glow | rgba(139,92,246,0.35) | `shadow-glow`, `glow-hover` (button hover glow), `bg-page-glow`, `bg-band-glow` |
 | on-accent (text/icons ON accent fills) | #110A19 (dark, not white) | `text-on-accent` |
 
 Radii: card 20px `rounded-card`, inner 14px `rounded-inner`, pill 999px
 `rounded-pill`. Container: `<Container>` / `max-w-container`. Its *content* is
-1200px wide (the reference's container is content-box: 1200px + 24px gutters),
-so `max-w-container` is 1248px border-box; `max-w-content` is the bare 1200px
-(header pill). `Section`/`Container` take `width="timeline"` (960px content,
-experience) or `"narrow"` (900px, testimonials/contact). Type tokens: `text-display` (hero h1), `text-tagline`, `text-h2`
+1072px wide with 24px gutters, so `max-w-container` is 1120px border-box (the same as the
+sample site's `.wrap`: 1120px max, 24px padding). The header pill is `--nav-max` (1080px,
+`max-w-[var(--nav-max)]`) with a constant 16px side margin, so it is 4px wider than the
+content on each side, as in the sample. Content's left edge = `max(24px, (viewport - 1120px) / 2 + 24px)`.
+`Section`/`Container` take `width="timeline"` (960px content,
+experience) or `"narrow"` (900px, testimonials/contact): deliberately narrower, centred
+blocks (the sample does the same). Case-study pages use the default width, so their
+heading, metrics and body start on the same left edge as every other section. Type tokens: `text-display` (hero h1), `text-tagline`, `text-h2`
 (+ `font-heading`); `tracking-eyebrow`.
 
 **Matching the reference exactly:** the reference is content-box with no base
@@ -226,6 +230,15 @@ below-the-fold items after hydration and fades them in. Fully static under
   `NEXT_DIST_DIR=.next-build npm run build` (`/.next-*/` is git-ignored).
   Next then appends that folder to `tsconfig.json` `include`; undo it with
   `git checkout -- tsconfig.json` before committing.
+- **A running `next dev` ignores new `tailwind.config.ts` keys until restarted**: it keeps
+  serving the old CSS, so a class that only exists in the config silently has no rules. We
+  hit this: the primary button had a dark `text-on-accent` label but no fill (near-black
+  with invisible text). So accent utilities that must not fail (`bg-accent-gradient`,
+  `glow-hover`, `text-name`) are plain CSS in `app/globals.css` (which hot-reloads), and
+  the primary button also has a solid `bg-accent` under the gradient. After changing the
+  Tailwind config, restart the dev server. Also: tokens are RGB triplets, so inside a
+  gradient/shadow write `rgb(var(--accent))`, never `var(--accent)` (`--accent-glow` is a
+  full rgba and is fine as is).
 - Visual checks: serve the reference with `python -m http.server 4000 --directory design`
   and compare against the dev server **in the same browser tab**; different
   device-pixel-ratios shift borders and rounding by up to 1px.

@@ -33,7 +33,7 @@ export default function Hero() {
           <p className="mb-1 mt-7 text-[26px] text-muted">{hero.greeting}</p>
           <h1
             id="hero-title"
-            className="m-0 font-heading text-display text-foreground"
+            className="m-0 font-heading text-display text-name"
           >
             {hero.name}
           </h1>

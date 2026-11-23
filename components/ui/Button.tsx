@@ -35,8 +35,10 @@ const base =
   "inline-flex items-center justify-center gap-2 rounded-pill border font-semibold transition duration-200 motion-safe:active:scale-[0.98] motion-reduce:transition-none";
 
 const variants: Record<Variant, string> = {
+  // bg-accent is the solid fallback under the gradient: the label (on-accent) is
+  // dark, so a button must never be left without a fill.
   primary:
-    "border-transparent bg-accent-gradient text-on-accent hover:brightness-110 active:brightness-95",
+    "border-transparent bg-accent bg-accent-gradient text-on-accent hover:brightness-110 active:brightness-95",
   // Hero secondary: outline with a faint fill.
   secondary:
     "border-border-strong bg-fill-subtle text-foreground hover:bg-fill-chip active:bg-fill-soft",
@@ -72,7 +74,7 @@ export default function Button(props: ButtonProps) {
     const classes = cn(
       base,
       variants[variant],
-      variant === "primary" && glow && "shadow-glow hover:shadow-glow-strong",
+      variant === "primary" && glow && "shadow-glow glow-hover",
       sizes[size],
       className,
     );
@@ -106,7 +108,7 @@ export default function Button(props: ButtonProps) {
       className={cn(
         base,
         variants[variant],
-        variant === "primary" && glow && "shadow-glow hover:shadow-glow-strong",
+        variant === "primary" && glow && "shadow-glow glow-hover",
         sizes[size],
         className,
       )}

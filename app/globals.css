@@ -50,6 +50,7 @@
   --text-subtle: 138 142 160; /* #8A8EA0 */
   --chip-text: 228 222 255; /* #E4DEFF */
   --text-soft: 226 228 236; /* #E2E4EC  testimonial quote */
+  --text-name: 182 186 200; /* #B6BAC8  the hero name (h1) only */
 
   /* Accent (brand) */
   --accent: 139 92 246; /* #8B5CF6  solid fills (dots, avatar), gradient start */
@@ -57,13 +58,21 @@
   --accent-text: 167 139 250; /* #A78BFA  accent text on dark */
   --accent-glow: rgba(139, 92, 246, 0.35);
   --on-accent: 17 10 25; /* #110A19  text/icons ON accent fills (4.6:1+ on both) */
+
+  /* Composite accent values, built from the tokens above. Gradients need
+     rgb(var(--x)): the tokens are bare triplets ("139 92 246"), which are not
+     a valid colour on their own inside linear-gradient(). */
+  --accent-gradient: linear-gradient(90deg, rgb(var(--accent)), rgb(var(--accent-2)));
+  --accent-shadow: 0 8px 32px var(--accent-glow); /* resting button glow */
+  --accent-shadow-strong: 0 10px 40px var(--accent-glow), 0 4px 14px var(--accent-glow); /* hover */
   --error: 252 165 165; /* #FCA5A5  form errors (8:1 on --bg) */
 
   /* Shape and layout */
   --radius-card: 20px;
   --radius-inner: 14px;
   --radius-pill: 999px;
-  --container-max: 1200px;
+  --container-max: 1072px; /* content width; the Container adds 2 x 24px gutters = 1120px */
+  --nav-max: 1080px; /* header pill */
   --container-timeline: 960px; /* experience */
   --container-narrow: 900px; /* testimonials, contact */
 }
@@ -96,6 +105,28 @@ body {
 }
 
 @layer utilities {
+  /*
+   * Accent utilities live here, not in tailwind.config.ts, on purpose: a running
+   * `next dev` does NOT pick up new tailwind.config.ts keys until it is
+   * restarted (it keeps serving the old CSS, so these would silently be missing
+   * and a primary button would render with no fill). Rules in this file
+   * hot-reload.
+   */
+  .bg-accent-gradient {
+    background-image: var(--accent-gradient);
+  }
+
+  /* Deeper button glow on hover (paired with Tailwind's shadow-glow). A plain
+     :hover rule rather than a hover: variant, so it never depends on Tailwind
+     regenerating variants. Specificity (class + :hover) beats .shadow-glow. */
+  .glow-hover:hover {
+    box-shadow: var(--accent-shadow-strong);
+  }
+
+  .text-name {
+    color: rgb(var(--text-name));
+  }
+
   .animate-blink {
     animation: blink 1s step-end infinite;
   }

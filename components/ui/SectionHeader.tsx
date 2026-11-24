@@ -36,7 +36,7 @@ export default function SectionHeader({
       <Heading
         id={`${id}-title`}
         className={cn(
-          "mb-3 mt-4 text-balance font-heading text-foreground",
+          "mb-3 mt-4 text-balance font-heading text-heading",
           size === "large" ? "text-h2-xl leading-[1.25]" : "text-h2",
         )}
       >

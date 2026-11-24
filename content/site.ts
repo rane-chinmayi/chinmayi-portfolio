@@ -1,4 +1,4 @@
-import type { OfferItem, PostItem, SiteContent } from "./types";
+import type { LinkItem, OfferItem, PostItem, SiteContent } from "./types";
 
 /**
  * Single source of truth for site copy and links.
@@ -14,11 +14,13 @@ export const site: SiteContent = {
 
   nav: [
     { label: "About", href: "/#about" },
-    { label: "Expertise", href: "/#expertise" },
+    // Hidden with the Expertise section while features.expertise is false (see navLinks()).
+    { label: "Expertise", href: "/#expertise", feature: "expertise" },
     { label: "Work", href: "/#work" },
     { label: "Experience", href: "/#experience" },
     { label: "Writing", href: "/#writing" },
-    { label: "Courses", href: "/#offers" },
+    // Hidden with the Offers section while features.offers is false (see navLinks()).
+    { label: "Courses", href: "/#offers", feature: "offers" },
     { label: "Contact", href: "/#contact" },
   ],
 
@@ -55,18 +57,34 @@ export const site: SiteContent = {
    * there) and, if you like, replace the "Newsletter" post card with the real
    * latest issue. While false: no signup band, no Newsletter card, the hero
    * chip says "Writing on applied AI for PMs", the Writing section shows a
-   * "Follow along on LinkedIn" call to action, and the course/template offer
+   * LinkedIn profile card (follow call to action), and the course/template offer
    * buttons email you instead of pointing at the signup form.
+   *
+   * offers: set to true to bring back the "Courses, Templates & Mentorship"
+   * section (id offers) and the "Courses" link in the header (desktop and
+   * mobile). While false, neither renders and nothing links to #offers. The
+   * section's code, components, types and content (`offers`, `sections.offers`)
+   * are all kept, so flipping the flag restores it exactly. Before turning it
+   * on, work through the TODO(chinmayi) notes on the offers below (names,
+   * prices, waitlist / purchase links).
+   *
+   * expertise: set to true to bring back the "How I Build Products" section
+   * (id expertise) and the "Expertise" link in the header (desktop and mobile).
+   * While false, neither renders and nothing links to #expertise. The section's
+   * code, components, types and content (`expertise`, `sections.expertise`) are
+   * all kept, so flipping the flag restores it exactly.
    */
   features: {
     newsletter: false,
+    offers: false,
+    expertise: false,
   },
 
   seo: {
     keywords: [
       "AI product manager",
       "AI product management",
-      "product manager London",
+      "product manager Mumbai",
       "generative AI",
       "agentic AI",
       "NLP",
@@ -78,7 +96,7 @@ export const site: SiteContent = {
     themeColor: "#08080B",
     locale: "en_GB",
     ogImageAlt:
-      "Chinmayi Rane. AI × Product, made simple. AI Product Manager, Mumbai to London.",
+      "Chinmayi Rane. AI × Product, made simple. AI Product Manager, Mumbai, India.",
     jobTitle: "AI Product Manager",
     knowsAbout: [
       "AI product management",
@@ -118,14 +136,17 @@ export const site: SiteContent = {
     ],
     primaryCta: { label: "View My Work", href: "/#work" },
     secondaryCta: { label: "Get In Touch", href: "/#contact" },
-    chips: ["Open to AI PM roles in London"],
+    chips: ["Open to AI PM roles"],
     newsletterChip: "Weekly newsletter on applied AI",
     writingChip: "Writing on applied AI for PMs",
     connectLabel: "Connect",
-    // The source photo is landscape (920×809); 65% keeps the face centred in the 4:5 crop.
-    photo: { src: "/photo.jpg", alt: "Chinmayi Rane", objectPosition: "65% center" },
+    // The photo is 1066×1091 (about square) in a 4:5 frame, so object-fit: cover
+    // fits the full height and trims ~18% of the width. 82% horizontally centres
+    // the head and hair in that crop (face centre sits at ~55% of the image); the
+    // vertical position has no effect because the whole height is shown.
+    photo: { src: "/photo.jpg", alt: "Chinmayi Rane", objectPosition: "82% center" },
     statBadge: { value: "30+", lines: ["daily users on", "my latest product"] },
-    awardBadge: { value: "3×", label: "AI/ML publications" },
+    awardBadge: { value: "3×", label: "IEEE publications" },
   },
 
   about: {
@@ -136,14 +157,14 @@ export const site: SiteContent = {
         " we build than how. Today I work where technology meets people: what problem does this solve, who benefits, and how do we know it's working?",
       ],
       [
-        "I'm based in Mumbai and relocating to London. Alongside product work, I write about startups, growth and applied AI, focused on real decisions rather than theory.",
+        "I'm based in Mumbai, India. Alongside product work, I write about startups, growth and applied AI, focused on real decisions rather than theory.",
       ],
     ],
     stats: [
       { value: "30+", label: "Daily active users" },
       { value: "100+", label: "Customer interviews" },
       { value: "18.9K", label: "Records in my NLP pipeline" },
-      { value: "3", label: "AI/ML publications" },
+      { value: "3", label: "IEEE publications" },
     ],
   },
 
@@ -181,6 +202,89 @@ export const site: SiteContent = {
         description:
           "Metrics definitions, funnels and scoring models that make decisions objective and auditable instead of gut calls.",
         chips: ["Python", "SQL", "Mixpanel", "Tableau"],
+      },
+    ],
+  },
+
+  howIThink: {
+    items: [
+      {
+        number: "01",
+        icon: "target",
+        title: "Why Before How",
+        description:
+          "I started as an engineer and realised I cared more about why we build than how. Every product I work on starts with the problem, the user and how we'll know it's working.",
+      },
+      {
+        number: "02",
+        icon: "trending-up",
+        title: "Outcomes Over Output",
+        description:
+          "Shipping features isn't the goal. I define success metrics upfront, like time saved, adoption or completion rates, and judge the work by them.",
+      },
+      {
+        number: "03",
+        icon: "refresh",
+        title: "Prototype to Learn",
+        description:
+          "A clickable prototype beats a static spec. Building fast with AI tools let me cut client feedback cycles from weeks to two days.",
+      },
+      {
+        number: "04",
+        icon: "shield",
+        title: "Reliability Is a Feature",
+        description:
+          "When people depend on an AI system, a wrong answer is a real cost. I design for trust: grounded answers, sources and honest confidence scores.",
+      },
+      {
+        number: "05",
+        icon: "scale",
+        title: "Make Decisions Auditable",
+        description:
+          "Gut calls don't scale. I turn judgement into transparent frameworks, from scoring models to cited AI answers, so anyone can see why a decision was made.",
+      },
+      {
+        number: "06",
+        icon: "filter",
+        title: "Build Less, Validate More",
+        description:
+          "Adding scope before validating what exists is feature accumulation, not product thinking. I expand only when the data shows demand.",
+      },
+    ],
+  },
+
+  // Shown under the How I Think timeline (id toolkit).
+  // TODO(chinmayi): adjust the tools in each category as your stack changes
+  // (add, remove or rename freely; a new category is just another entry).
+  // Emoji here use the system emoji font; the Contact section's are in the
+  // Noto subset (see app/fonts/README.md).
+  toolkit: {
+    label: "My Toolkit",
+    categories: [
+      {
+        emoji: "📁",
+        name: "Product",
+        tools: ["Jira", "Notion"],
+      },
+      {
+        emoji: "🤖",
+        name: "AI",
+        tools: ["Claude", "Claude Code", "Gemini", "MCP", "FAISS"],
+      },
+      {
+        emoji: "📊",
+        name: "Analytics",
+        tools: ["Mixpanel", "Looker Studio", "Tableau", "SQL"],
+      },
+      {
+        emoji: "🎨",
+        name: "Design",
+        tools: ["Figma", "Lovable"],
+      },
+      {
+        emoji: "⚙️",
+        name: "Engineering",
+        tools: ["Python", "FastAPI", "React", "spaCy", "GCP"],
       },
     ],
   },
@@ -262,17 +366,18 @@ export const site: SiteContent = {
     ],
     publicationsHeading: "Publications",
     readPaperLabel: "Read paper",
-    // Items with `draft: true` are never rendered (or put in structured data).
+    slider: {
+      region: "Publications",
+      previous: "Previous publication",
+      next: "Next publication",
+      goTo: "Go to publication {n}",
+      slide: "{n} of {total}",
+      showingRange: "Showing publications {from}–{to} of {total}",
+      showingOne: "Showing publication {from} of {total}",
+    },
+    // Newest first. Items with `draft: true` are never rendered (or put in
+    // structured data); add `venueFull` for a tooltip and richer metadata.
     publications: [
-      {
-        title: "Image Captioning based Smart Navigation System for Visually Impaired",
-        venue: "ICCICT",
-        year: "2021",
-        takeaway:
-          "Shaped how I think about AI reliability when users depend on the system for safety.",
-        href: "https://ieeexplore.ieee.org/document/9510102",
-        publisher: "IEEE",
-      },
       {
         title: "Data Driven Analysis for Startup Investments for Venture Capitalists",
         venue: "ICONAT",
@@ -283,16 +388,23 @@ export const site: SiteContent = {
         publisher: "IEEE",
       },
       {
-        // TODO(chinmayi): add the third publication (title, venue, year, takeaway,
-        // IEEE link), then delete `draft: true`. Until then only two cards show;
-        // the "3 AI/ML publications" stats stay as they are.
-        title: "TODO(chinmayi): third publication title",
-        venue: "TODO venue",
-        year: "TODO",
-        takeaway: "TODO(chinmayi): one-line takeaway.",
-        href: "https://ieeexplore.ieee.org/",
+        title: "Image Captioning based Smart Navigation System for Visually Impaired",
+        venue: "ICCICT",
+        year: "2021",
+        takeaway:
+          "Shaped how I think about AI reliability when users depend on the system for safety.",
+        href: "https://ieeexplore.ieee.org/document/9510102",
         publisher: "IEEE",
-        draft: true,
+      },
+      {
+        title: "Forecasting FAANG Stocks using Hidden Markov Model",
+        venue: "I2CT",
+        venueFull: "2021 6th International Conference for Convergence in Technology (I2CT)",
+        year: "2021",
+        takeaway:
+          "Taught me to model what's hidden from what's visible, predicting next-day stock prices with 97–99% accuracy.",
+        href: "https://ieeexplore.ieee.org/document/9418216",
+        publisher: "IEEE",
       },
     ],
   },
@@ -302,14 +414,12 @@ export const site: SiteContent = {
       {
         title: "8 AI agent architectures and when to use each",
         type: "Carousel",
-        // TODO(chinmayi): replace with the exact LinkedIn post URL for this carousel.
-        href: "https://www.linkedin.com/in/chinmayi-rane/recent-activity/all/",
+        href: "https://lnkd.in/p/d2NMWx5M",
       },
       {
-        title: "What happens after you hit Enter on ChatGPT",
+        title: "PM jargon I had to secretly google in my first month",
         type: "Carousel",
-        // TODO(chinmayi): replace with the exact LinkedIn post URL for this carousel.
-        href: "https://www.linkedin.com/in/chinmayi-rane/recent-activity/all/",
+        href: "https://lnkd.in/p/d8FCSQvT",
       },
       {
         // TODO(chinmayi): when the newsletter launches, replace this with the
@@ -336,7 +446,13 @@ export const site: SiteContent = {
     },
     followCta: {
       line: "I post plain-language AI explainers for PMs and founders every week.",
-      label: "Follow along on LinkedIn",
+      profile: {
+        name: "Chinmayi Rane",
+        tagline: "AI × Product, made simple",
+        buttonLabel: "Follow",
+        ariaLabel: "Follow Chinmayi Rane on LinkedIn (opens in new tab)",
+        photo: "/profile-avatar.jpg",
+      },
     },
   },
 
@@ -400,12 +516,17 @@ export const site: SiteContent = {
   // Add more testimonials by appending to this array: one renders as a single
   // centred card, two or more become a grid.
   testimonials: {
+    readMoreLabel: "Read more",
+    showLessLabel: "Show less",
     items: [
       {
         quote:
-          "Chinmayi Rane is thoughtful, capable and consistent in her character through professional and social situations. While serving as a Graduate Teaching Assistant, she supported differing faculty members who, term over term, equally rated her work exceptionally high. Chinmayi Rane has my full-fledged endorsement.",
+          "Chinmayi Rane is thoughtful, capable and consistent in her character through professional and social situations. The reliability she demonstrates in any given circumstance is indicative of the approach she will take to secure success in her career output as she moves forward in the professional world. While serving as a Graduate Teaching Assistant in the Spears School of Business, she supported differing faculty members who, term over term, equally rated her work exceptionally high. Furthermore, Chinmayi's level of on-campus involvement was rock-solid, participating in CIE Scholars, ISO, GLAS, and GPSGA each commanding significant time management, skillful communication and a lot of work – eventually leading to recognition by OSU's President Shrum. Based upon proven history, Chinmayi Rane has my full-fledged endorsement.",
         name: "Kenneth Kern",
-        role: "Director, Business Graduate Programs, Oklahoma State University",
+        role: "Director, Business Graduate Programs at Oklahoma State University",
+        context: "LinkedIn recommendation · April 2024",
+        linkedin: "https://www.linkedin.com/in/kenneth-kern-152253139/",
+        photo: "/testimonials/kenneth-kern.jpg",
         initials: "KK",
       },
     ],
@@ -435,6 +556,11 @@ export const site: SiteContent = {
       eyebrow: "Expertise",
       title: "How I Build Products",
       lead: "From the first customer interview to a working AI prototype, and the metrics that prove it worked.",
+    },
+    howIThink: {
+      eyebrow: "Product Philosophy",
+      title: "How I Think",
+      lead: "The principles that guide how I discover, build, measure and improve AI products.",
     },
     work: {
       eyebrow: "Featured Work",
@@ -468,6 +594,13 @@ export const site: SiteContent = {
 /** URL of a case-study page (app/work/[slug]). */
 export function caseStudyHref(slug: string): string {
   return `/work/${slug}`;
+}
+
+/** Header nav links, minus any whose feature flag is off (e.g. "Courses" while offers is off). */
+export function navLinks(): LinkItem[] {
+  return site.nav
+    .filter((link) => !link.feature || site.features[link.feature])
+    .map(({ label, href }) => ({ label, href }));
 }
 
 /** Link for an offer button, honouring the newsletter feature flag. */

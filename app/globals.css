@@ -50,7 +50,7 @@
   --text-subtle: 138 142 160; /* #8A8EA0 */
   --chip-text: 228 222 255; /* #E4DEFF */
   --text-soft: 226 228 236; /* #E2E4EC  testimonial quote */
-  --text-name: 182 186 200; /* #B6BAC8  the hero name (h1) only */
+  --text-heading: 182 186 200; /* #B6BAC8  page and section headings (h1/h2) and the hero name */
 
   /* Accent (brand) */
   --accent: 139 92 246; /* #8B5CF6  solid fills (dots, avatar), gradient start */
@@ -73,7 +73,7 @@
   --radius-pill: 999px;
   --container-max: 1072px; /* content width; the Container adds 2 x 24px gutters = 1120px */
   --nav-max: 1080px; /* header pill */
-  --container-timeline: 960px; /* experience */
+  --container-timeline: 900px; /* experience: matches the sample's 900px timeline (line + 864px cards) */
   --container-narrow: 900px; /* testimonials, contact */
 }
 
@@ -123,8 +123,18 @@ body {
     box-shadow: var(--accent-shadow-strong);
   }
 
-  .text-name {
-    color: rgb(var(--text-name));
+  /* Like glow-hover, but triggered by hovering/focusing a parent `.group` (the
+     profile card strengthens its Follow pill's glow). Plain CSS: Tailwind reads
+     shadow-[var(--x)] as a shadow colour, not a box-shadow. */
+  .group:hover .group-glow,
+  .group:focus-visible .group-glow {
+    box-shadow: var(--accent-shadow-strong);
+  }
+
+  /* Colour of page/section headings and the hero name (SectionHeader, case-study
+     and 404 titles, Hero h1). Card titles, stats and eyebrows keep text-foreground. */
+  .text-heading {
+    color: rgb(var(--text-heading));
   }
 
   .animate-blink {
@@ -136,6 +146,29 @@ body {
     animation-timing-function: ease-in-out;
     animation-iteration-count: infinite;
   }
+
+  /*
+   * Gentle float for the two badges on the hero photo: one `float` keyframe
+   * (translateY only, so no layout shift), two timings so they drift out of
+   * sync. The negative delay starts the second badge part-way through its
+   * cycle, so neither waits before moving. Off under reduced motion (below).
+   */
+  /* Timeline node (How I Think): a soft resting glow that pulses on hover only. */
+  .node-glow {
+    box-shadow: 0 0 22px -6px var(--accent-glow);
+  }
+
+  .node-glow:hover {
+    animation: node-pulse 1.8s ease-in-out infinite;
+  }
+
+  .animate-float {
+    animation: float 3.8s ease-in-out infinite;
+  }
+
+  .animate-float-alt {
+    animation: float 3.2s ease-in-out -1.4s infinite;
+  }
 }
 
 @keyframes blink {
@@ -146,6 +179,27 @@ body {
   51%,
   100% {
     opacity: 0;
+  }
+}
+
+@keyframes node-pulse {
+  0%,
+  100% {
+    box-shadow: 0 0 22px -6px var(--accent-glow);
+  }
+  50% {
+    box-shadow: 0 0 34px 2px var(--accent-glow);
+  }
+}
+
+/* 6px of travel, up and back. */
+@keyframes float {
+  0%,
+  100% {
+    transform: translateY(0);
+  }
+  50% {
+    transform: translateY(-6px);
   }
 }
 
@@ -168,6 +222,52 @@ body {
     transform: translateY(16px);
   }
 
+  /*
+   * "How I Think" timeline items (data-reveal-kind="timeline"). The <li> is the
+   * observed element; it stays put and its two children animate from its state:
+   * the node scales in (0.8 -> 1), then the card travels 100px toward the
+   * centre line from its own side (phones: always from the right, toward the
+   * line on the left). Transform and opacity only. The list clips overflow-x so
+   * the offset never causes a scrollbar.
+   */
+  [data-reveal="hidden"][data-reveal-kind="timeline"] {
+    opacity: 1;
+    transform: none;
+  }
+
+  [data-reveal="hidden"] .tl-node {
+    opacity: 0;
+    transform: scale(0.8);
+  }
+
+  [data-reveal="hidden"] .tl-card {
+    opacity: 0;
+    transform: translateX(100px);
+  }
+
+  @media (min-width: 768px) {
+    [data-reveal="hidden"][data-tl-side="left"] .tl-card {
+      transform: translateX(-100px);
+    }
+  }
+
+  [data-reveal="shown"] .tl-node {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 450ms ease-out,
+      transform 500ms cubic-bezier(0.22, 1, 0.36, 1);
+  }
+
+  /* The card starts 150ms after the node, so it appears to connect to it. */
+  [data-reveal="shown"] .tl-card {
+    opacity: 1;
+    transform: none;
+    transition:
+      opacity 700ms cubic-bezier(0.22, 1, 0.36, 1) 150ms,
+      transform 700ms cubic-bezier(0.22, 1, 0.36, 1) 150ms;
+  }
+
   [data-reveal="shown"] {
     opacity: 1;
     transform: none;
@@ -185,6 +285,12 @@ body {
   }
 
   .animate-blink {
+    animation: none;
+  }
+
+  .animate-float,
+  .animate-float-alt,
+  .node-glow:hover {
     animation: none;
   }
 

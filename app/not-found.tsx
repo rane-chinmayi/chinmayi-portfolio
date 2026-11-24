@@ -24,7 +24,7 @@ export default function NotFound() {
         <Eyebrow>{eyebrow}</Eyebrow>
         <h1
           id="not-found-title"
-          className="mb-3 mt-4 text-balance font-heading text-h2-xl text-foreground"
+          className="mb-3 mt-4 text-balance font-heading text-h2-xl text-heading"
         >
           {title}
         </h1>

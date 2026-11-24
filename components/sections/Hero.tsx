@@ -33,7 +33,7 @@ export default function Hero() {
           <p className="mb-1 mt-7 text-[26px] text-muted">{hero.greeting}</p>
           <h1
             id="hero-title"
-            className="m-0 font-heading text-display text-name"
+            className="m-0 font-heading text-display text-heading"
           >
             {hero.name}
           </h1>
@@ -108,7 +108,7 @@ export default function Hero() {
           {/* Floating badges. Offsets are smaller on phones so they stay inside the viewport. */}
           <Card
             surface="solid"
-            className="absolute -left-4 bottom-14 flex items-center gap-3 px-[18px] py-3.5 sm:-left-9"
+            className="animate-float absolute -left-4 bottom-14 flex items-center gap-3 px-[18px] py-3.5 sm:-left-9"
           >
             <span className="font-heading text-[26px] font-extrabold text-accent-text">
               {hero.statBadge.value}
@@ -124,7 +124,7 @@ export default function Hero() {
 
           <Card
             surface="solid"
-            className="absolute -right-3 top-10 px-4 py-3 text-[13px] font-semibold sm:-right-6"
+            className="animate-float-alt absolute -right-3 top-10 px-4 py-3 text-[13px] font-semibold sm:-right-6"
           >
             <span className="text-accent-text">{hero.awardBadge.value}</span>{" "}
             {hero.awardBadge.label}

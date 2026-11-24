@@ -3,6 +3,11 @@ export interface LinkItem {
   href: string;
 }
 
+/** A header nav link. With `feature` set it is shown only while that flag is on. */
+export interface NavItem extends LinkItem {
+  feature?: keyof FeatureFlags;
+}
+
 /**
  * Text with inline emphasis: plain strings and `{ em }` runs.
  * e.g. ["moved toward the ", { em: "why" }, " behind what we build."]
@@ -19,6 +24,7 @@ export interface SectionIntro {
 export type SectionKey =
   | "about"
   | "expertise"
+  | "howIThink"
   | "work"
   | "experience"
   | "writing"
@@ -66,6 +72,37 @@ export interface ExpertiseItem {
   title: string;
   description: string;
   chips: string[];
+}
+
+export type PrincipleIcon =
+  | "target"
+  | "trending-up"
+  | "refresh"
+  | "shield"
+  | "scale"
+  | "filter";
+
+/** One column of the "My Toolkit" block under How I Think. */
+export interface ToolkitCategory {
+  /** Decorative emoji before the name (aria-hidden). */
+  emoji: string;
+  name: string;
+  tools: string[];
+}
+
+export interface ToolkitContent {
+  /** Centred uppercase label (an h3). */
+  label: string;
+  categories: ToolkitCategory[];
+}
+
+/** One "How I Think" principle (a node on the homepage timeline). */
+export interface PrincipleItem {
+  /** Badge text, e.g. "01". Decorative: the list order already numbers them. */
+  number: string;
+  icon: PrincipleIcon;
+  title: string;
+  description: string;
 }
 
 /** One key result, shown as a stat card and (the first) as a card's outcome line. */
@@ -156,6 +193,8 @@ export interface PublicationItem {
   title: string;
   /** Conference or journal name, e.g. "ICCICT". Shown as "<venue> <year>". */
   venue: string;
+  /** Full venue name, for the tooltip and structured data. Optional. */
+  venueFull?: string;
   year: string;
   /** One line on what the paper taught or shaped. */
   takeaway: string;
@@ -167,6 +206,22 @@ export interface PublicationItem {
   draft?: boolean;
 }
 
+/** Accessible text for a CardSlider. `{n}`, `{total}`, `{from}` and `{to}` are filled in. */
+export interface SliderLabels {
+  /** aria-label of the carousel region. */
+  region: string;
+  previous: string;
+  next: string;
+  /** Dot button, e.g. "Go to publication {n}". */
+  goTo: string;
+  /** Each slide, e.g. "{n} of {total}". */
+  slide: string;
+  /** Live announcement when two or more cards show, e.g. "Showing publications {from}–{to} of {total}". */
+  showingRange: string;
+  /** Live announcement when one card shows. */
+  showingOne: string;
+}
+
 export interface ExperienceContent {
   roles: RoleItem[];
   /** Visually hidden heading for the education cards. */
@@ -176,6 +231,8 @@ export interface ExperienceContent {
   publicationsHeading: string;
   readPaperLabel: string;
   publications: PublicationItem[];
+  /** Labels for the publications slider. */
+  slider: SliderLabels;
 }
 
 export type PostType = "Carousel" | "Newsletter";
@@ -201,12 +258,24 @@ export interface NewsletterContent {
   unavailableMessage: string;
 }
 
+/** The LinkedIn profile card under the Writing posts (link: site.links.linkedin). */
+export interface ProfileCardContent {
+  name: string;
+  tagline: string;
+  /** Label of the "Follow" pill (shown after a plus icon). */
+  buttonLabel: string;
+  /** Accessible name of the whole card link. */
+  ariaLabel: string;
+  /** Avatar image in /public: a square, face-centred crop (decorative, alt is empty). */
+  photo: string;
+}
+
 export interface WritingContent {
   posts: PostItem[];
   readLabel: string;
   newsletter: NewsletterContent;
   /** Shown instead of the newsletter band while the newsletter feature is off. */
-  followCta: { line: string; label: string };
+  followCta: { line: string; profile: ProfileCardContent };
 }
 
 export interface OfferItem {
@@ -233,6 +302,12 @@ export interface TestimonialItem {
   quote: string;
   name: string;
   role: string;
+  /** Small muted line under the role, e.g. "LinkedIn recommendation · April 2024". */
+  context?: string;
+  /** Makes the name a link (opens in a new tab). */
+  linkedin?: string;
+  /** Avatar image in /public. Without it, the initials circle is shown. */
+  photo?: string;
   initials: string;
 }
 
@@ -252,6 +327,10 @@ export interface ContactContent {
 export interface FeatureFlags {
   /** Newsletter signup (band, newsletter card, hero chip, offer links). */
   newsletter: boolean;
+  /** The Offers section (courses, templates, mentorship) and its nav link. */
+  offers: boolean;
+  /** The Expertise section ("How I Build Products") and its nav link. */
+  expertise: boolean;
 }
 
 export interface SeoContent {
@@ -282,7 +361,7 @@ export interface SiteContent {
   title: string;
   /** Meta description. */
   description: string;
-  nav: LinkItem[];
+  nav: NavItem[];
   links: {
     linkedin: string;
     email: string;
@@ -313,11 +392,18 @@ export interface SiteContent {
   hero: HeroContent;
   about: AboutContent;
   expertise: { items: ExpertiseItem[] };
+  howIThink: { items: PrincipleItem[] };
+  toolkit: ToolkitContent;
   work: WorkContent;
   experience: ExperienceContent;
   writing: WritingContent;
   offers: { items: OfferItem[] };
-  testimonials: { items: TestimonialItem[] };
+  testimonials: {
+    items: TestimonialItem[];
+    /** Toggle labels for quotes longer than two lines. */
+    readMoreLabel: string;
+    showLessLabel: string;
+  };
   contact: ContactContent;
   sections: Record<SectionKey, SectionIntro>;
 }

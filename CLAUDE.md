@@ -43,8 +43,9 @@ design/              design reference (not shipped)
 
 - Import with the `@/` alias (maps to the repo root).
 - Homepage order (`app/page.tsx`): Hero `#top`, About `#about`, Expertise
-  `#expertise`, Work `#work`, Experience `#experience`, Writing `#writing`,
-  Offers `#offers`, Testimonials `#testimonials`, Contact `#contact`.
+  `#expertise`, How I Think `#how-i-think` (not in the nav; `site.howIThink`), Work `#work`, Experience `#experience`, Writing `#writing`,
+  Offers `#offers` (only while `features.offers` is on), Testimonials `#testimonials`,
+  Contact `#contact`.
 - Header and footer live in `app/layout.tsx`, never inside `<main>`, so every
   route gets them.
 
@@ -66,6 +67,7 @@ translucent tokens carry their own alpha (use as-is).
 | fill-subtle / fill-chip / fill-soft | rgba(255,255,255, .03 / .05 / .06) | `bg-fill-subtle`, `bg-fill-chip`, `bg-fill-soft` |
 | text | #F8FAFC | `text-foreground` |
 | text-muted | #B6BAC8 | `text-muted` |
+| text-heading | #B6BAC8 | `text-heading` (hero name, section/page h1-h2, case-study and 404 titles; card titles, stats, eyebrows stay `text-foreground`) |
 | text-subtle | #8A8EA0 | `text-subtle` |
 | chip-text | #E4DEFF | `text-chip` |
 | accent (solid fills: dots, avatar; gradient start) | #8B5CF6 | `bg-accent` |
@@ -81,8 +83,8 @@ Radii: card 20px `rounded-card`, inner 14px `rounded-inner`, pill 999px
 sample site's `.wrap`: 1120px max, 24px padding). The header pill is `--nav-max` (1080px,
 `max-w-[var(--nav-max)]`) with a constant 16px side margin, so it is 4px wider than the
 content on each side, as in the sample. Content's left edge = `max(24px, (viewport - 1120px) / 2 + 24px)`.
-`Section`/`Container` take `width="timeline"` (960px content,
-experience) or `"narrow"` (900px, testimonials/contact): deliberately narrower, centred
+`Section`/`Container` take `width="timeline"` (900px content,
+Experience: a 900px block = 36px left padding + 864px cards, line centred 6px in, cards `30px 32px` padding (24px on phones), 36px apart; Education and Publications share the cards' left edge, width and padding) or `"narrow"` (900px, testimonials/contact): deliberately narrower, centred
 blocks (the sample does the same). Case-study pages use the default width, so their
 heading, metrics and body start on the same left edge as every other section. Type tokens: `text-display` (hero h1), `text-tagline`, `text-h2`
 (+ `font-heading`); `tracking-eyebrow`.
@@ -120,7 +122,7 @@ triplets (so `bg-accent/20` works); hex values are in the comments.
 6. **Respect `prefers-reduced-motion`.** Every animation or transition needs a
    reduced-motion fallback (`motion-reduce:` utilities or a media query).
 7. **Icons: lucide-react only. No emoji or text glyphs (✓ ✦ ☰) as icons, except the
-   Contact section, which uses emoji by design.** Those live in `content/site.ts`
+   Contact section and the My Toolkit headings, which use emoji by design.** Those live in `content/site.ts`
    (`contact.*Icon`, `chips[].icon`), render through `ui/Emoji` (`aria-hidden`, tailwind
    `font-emoji`). They are set in a ~7 KB **subset** of Noto Color Emoji loaded with
    `next/font/local` (`app/emoji-font.ts`, files + how to regenerate in `app/fonts/README.md`),
@@ -179,13 +181,41 @@ images all read it. `site.ts` holds only the UI strings around it (`site.work`).
 `site.experience.publications` (Experience section, anchor `#publications`, after
 Education). `draft: true` items never render and are left out of the Person JSON-LD
 (which is an `@graph` of the Person + one ScholarlyArticle per published paper). Display
-is `<venue> <year>`, so keep the year out of `venue`.
+is `<venue> <year>`, so keep the year out of `venue`. Keep the list newest first. They render as vertical cards (FileText tile, `VENUE · YEAR` label, title, takeaway, "Read paper" pinned to the bottom) in a `CardSlider`: 2 cards visible from md, 1 on phones, equal height. Slider text is `site.experience.slider`. Optional `venueFull` adds a tooltip
+(`<abbr title>`) and is used as the venue name in the JSON-LD.
+
+## Feature flag: expertise
+
+`content/site.ts` → `features: { expertise: false }`. While false, the Expertise section
+("How I Build Products", `#expertise`) is not rendered (`app/page.tsx`) and the "Expertise"
+header link is hidden (desktop and mobile). The code, types and content (`site.expertise`,
+`site.sections.expertise`, `components/sections/Expertise.tsx`) are kept; set the flag to
+`true` to restore it exactly. Same mechanism as offers (`feature` on the `site.nav` entry).
+
+## My Toolkit
+
+`site.toolkit` (categories of emoji + name + tools) renders as a sub-block (`#toolkit`, an h3
+label + one column per category) under the How I Think timeline, inside that section. Tools
+are non-interactive pills (accent 15% fill, 35% border; hover only brightens). Marked
+`TODO(chinmayi)` in `site.ts` for editing. Toolkit emoji use `ui/Emoji`; only the Contact
+emoji are in the Noto subset, so these fall back to the system emoji font.
+
+## Feature flag: offers
+
+`content/site.ts` → `features: { offers: false }`. While false, the Offers section
+("Courses, Templates & Mentorship", `#offers`) is not rendered (`app/page.tsx`) and the
+"Courses" header link is hidden (desktop and mobile), so nothing points at `#offers`. All
+Offers code, types and content stay (`components/sections/Offers.tsx`, `site.offers`,
+`site.sections.offers`). Set it to `true` to restore everything exactly; first work through
+the `TODO(chinmayi)` notes on the offers (names, prices, waitlist/purchase links). Nav items
+can be gated the same way: give a `site.nav` entry `feature: "<flag>"`; the header reads
+`navLinks()`, never `site.nav` directly.
 
 ## Feature flag: newsletter
 
 `content/site.ts` → `features: { newsletter: false }`. While false, nothing
 newsletter-related renders: the Writing band and the "Newsletter" post card are
-hidden (2 centred cards + a "Follow along on LinkedIn" CTA instead), the hero chip
+hidden (2 centred cards + a LinkedIn profile card (`ui/ProfileCard`, whole card is one link) instead), the hero chip
 uses `writingChip`, and Offers waitlist/notify buttons use `hrefNoNewsletter`
 (mailto). All newsletter code stays (`NewsletterForm`, types, `site.newsletter`).
 To turn it on: set up the provider + `actionUrl` (TODOs in `site.ts`), then set
@@ -199,6 +229,44 @@ onto an element. Content is visible without JS; `components/ui/RevealObserver`
 (one client component, IntersectionObserver, mounted in `app/layout.tsx`) hides
 below-the-fold items after hydration and fades them in. Fully static under
 `prefers-reduced-motion`. Never reveal above-the-fold content (layout shift).
+"How I Think" timeline items are a variant (`data-reveal-kind="timeline"` on each `<li>`;
+`.tl-node` / `.tl-card` in `globals.css`): the node scales in, then the card travels 100px
+toward the centre line (700ms), triggered at 20% visible; items already on screen at load
+animate immediately; the list clips overflow-x. Each item plays once per page load (nothing
+is stored), so a refresh replays it.
+
+## Expandable quotes
+
+`components/ui/ExpandableQuote.tsx` (client) clamps a testimonial quote to 2 lines with a
+"Read more" / "Show less" toggle (labels in `site.testimonials`). The full text is always in the
+HTML (clamped only visually via `data-clamped`); a `<noscript>` rule shows it all without JS. The
+button appears only if the text really exceeds 2 lines (measured on mount and via
+ResizeObserver). The height tweens 300ms ease-out (line-clamp itself can't animate, so the
+clamp is lifted during the tween and restored at the end of a collapse); instant under reduced
+motion. Each quote expands independently.
+
+## CardSlider
+
+`components/ui/CardSlider.tsx` (client, reusable): `<CardSlider items={[...]} labels={...} visible={{ base: 1, md: 2 }} />`.
+The track is a native `overflow-x` scroller with `scroll-snap` (one snap point per card), so swipe,
+trackpad and keyboard scrolling work with no JS; with no JS the controls simply don't render and all
+cards stay reachable. With JS it adds Previous/Next + pagination dots; the position is derived from
+`scrollLeft`, so swipes and clicks stay in sync, and Previous/Next/arrow keys read the live scroll
+position (not React state). Cards outside the visible window are `inert` (links not tabbable); if
+focus was inside one, it moves to the carousel region so the arrow keys keep working. A polite live
+region announces the visible range, only after the user interacts. Labels are templates
+(`{n}`, `{total}`, `{from}`, `{to}`) in content (`SliderLabels`). Smooth scroll uses the browser's native
+animation (about 400ms); instant under reduced motion.
+
+## Count-up numbers
+
+`components/ui/CountUp.tsx`: `<CountUp value="18.9K" delay={120} />` counts the number part
+from 0 to its final value once (1.6s, ease-out) when first 30% visible; used on the About
+stats only. It parses prefix / number / decimals / suffix; anything else ("Top 35%",
+"5 + 2") renders as static text. The server HTML holds the final value; the digits are
+`aria-hidden` and the wrapper has `aria-label` = the final value; reduced motion leaves the
+final value in place. Poppins has no tabular figures, so every digit sits in a fixed-width
+cell (and missing leading digits are reserved invisibly) to keep the layout still while counting.
 
 ## SEO and sharing
 
@@ -234,7 +302,7 @@ below-the-fold items after hydration and fades them in. Fully static under
   serving the old CSS, so a class that only exists in the config silently has no rules. We
   hit this: the primary button had a dark `text-on-accent` label but no fill (near-black
   with invisible text). So accent utilities that must not fail (`bg-accent-gradient`,
-  `glow-hover`, `text-name`) are plain CSS in `app/globals.css` (which hot-reloads), and
+  `glow-hover`, `text-heading`) are plain CSS in `app/globals.css` (which hot-reloads), and
   the primary button also has a solid `bg-accent` under the gradient. After changing the
   Tailwind config, restart the dev server. Also: tokens are RGB triplets, so inside a
   gradient/shadow write `rgb(var(--accent))`, never `var(--accent)` (`--accent-glow` is a

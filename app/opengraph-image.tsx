@@ -5,7 +5,7 @@ import { loadPoppins } from "@/lib/og-font";
 import { ogBackdrop } from "@/lib/og-style";
 
 export const alt =
-  "Chinmayi Rane. AI × Product, made simple. AI Product Manager, Mumbai to London.";
+  "Chinmayi Rane. AI × Product, made simple. AI Product Manager, Mumbai, India.";
 // next/og on the Node runtime fails on Windows (invalid bundled-font URL); edge works everywhere.
 export const runtime = "edge";
 export const size = { width: 1200, height: 630 };
@@ -92,22 +92,7 @@ export default async function OpenGraphImage() {
         >
           <span>AI Product Manager</span>
           <span style={{ color: brand.accentText }}>·</span>
-          <span>Mumbai</span>
-          {/* Poppins has no arrow glyph, so draw it. */}
-          <svg
-            width="30"
-            height="30"
-            viewBox="0 0 24 24"
-            fill="none"
-            stroke={brand.accentText}
-            strokeWidth="2.4"
-            strokeLinecap="round"
-            strokeLinejoin="round"
-          >
-            <path d="M5 12h14" />
-            <path d="m12 5 7 7-7 7" />
-          </svg>
-          <span>London</span>
+          <span>Mumbai, India</span>
         </div>
       </div>
     ),

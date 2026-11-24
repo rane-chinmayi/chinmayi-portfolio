@@ -1,4 +1,5 @@
 import Card from "@/components/ui/Card";
+import CountUp from "@/components/ui/CountUp";
 import { reveal } from "@/lib/reveal";
 import Lead from "@/components/ui/Lead";
 import RichText from "@/components/ui/RichText";
@@ -24,7 +25,7 @@ export default function About() {
           <li key={stat.label} {...reveal(index, 4)}>
             <Card className="h-full px-5 py-7 text-center">
               <p className="font-heading text-[38px] font-bold text-accent-text">
-                {stat.value}
+                <CountUp value={stat.value} delay={index * 120} />
               </p>
               <p className="mt-1.5 text-[12px] font-semibold uppercase tracking-[0.12em] text-muted">
                 {stat.label}

@@ -1,7 +1,7 @@
 import { ArrowRight } from "lucide-react";
 import NewsletterForm from "@/components/forms/NewsletterForm";
-import Button from "@/components/ui/Button";
 import Card from "@/components/ui/Card";
+import ProfileCard from "@/components/ui/ProfileCard";
 import Chip from "@/components/ui/Chip";
 import Section from "@/components/ui/Section";
 import SectionHeader from "@/components/ui/SectionHeader";
@@ -89,16 +89,12 @@ export default function Writing() {
           <p className="mx-auto max-w-[520px] text-[15px] text-muted">
             {followCta.line}
           </p>
-          <Button
-            href={site.links.linkedin}
-            newTab
-            variant="outline"
-            size="md"
-            className="mt-5"
-          >
-            {followCta.label}
-            <span className="sr-only">{site.labels.opensInNewTab}</span>
-          </Button>
+          <div className="mt-6">
+            <ProfileCard
+              {...followCta.profile}
+              href={site.links.linkedin}
+            />
+          </div>
         </div>
       )}
     </Section>

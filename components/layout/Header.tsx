@@ -4,7 +4,7 @@ import { Menu, X } from "lucide-react";
 import Link from "next/link";
 import { useEffect, useRef, useState } from "react";
 import Button from "@/components/ui/Button";
-import { site } from "@/content/site";
+import { navLinks, site } from "@/content/site";
 import { cn } from "@/lib/cn";
 
 const MOBILE_NAV_ID = "mobile-nav";
@@ -85,7 +85,7 @@ export default function Header() {
           <div className="hidden items-center gap-6 lg:flex">
             <nav aria-label={site.labels.primaryNav}>
               <ul className="flex items-center gap-6">
-                {site.nav.map((link) => (
+                {navLinks().map((link) => (
                   <li key={link.href}>
                     <Link
                       href={link.href}
@@ -129,7 +129,7 @@ export default function Header() {
         >
           <nav aria-label={site.labels.mobileNav}>
             <ul className="flex flex-col gap-1">
-              {site.nav.map((link) => (
+              {navLinks().map((link) => (
                 <li key={link.href}>
                   <Link
                     href={link.href}

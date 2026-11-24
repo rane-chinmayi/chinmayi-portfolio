@@ -41,7 +41,7 @@ export default function CaseHeader({ item }: { item: WorkItem }) {
       <div className="mt-8">
         <Chip tone="accent">{item.category}</Chip>
       </div>
-      <h1 id="case-title" className="mt-5 text-balance font-heading text-case-title text-foreground">
+      <h1 id="case-title" className="mt-5 text-balance font-heading text-case-title text-heading">
         {item.title}
       </h1>
       <p className="mt-5 max-w-[720px] text-[18px] leading-[1.65] text-muted">

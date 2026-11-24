@@ -38,7 +38,10 @@ export function personJsonLd() {
       url: paper.href,
       datePublished: paper.year,
       author: personRef,
-      isPartOf: { "@type": "CreativeWork", name: `${paper.venue} ${paper.year}` },
+      isPartOf: {
+        "@type": "CreativeWork",
+        name: paper.venueFull ?? `${paper.venue} ${paper.year}`,
+      },
       ...(paper.publisher && {
         publisher: { "@type": "Organization", name: paper.publisher },
       }),
